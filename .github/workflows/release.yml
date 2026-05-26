@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Backend
+        working-directory: backend
+        run: |
+          npm ci --prefer-offline
+          npm run build
+
+      - name: Build Frontend
+        working-directory: frontend
+        run: |
+          npm ci --prefer-offline
+          npm run build
+
+      - name: Create deploy archive
+        run: |
+          tar -czf wifi-media-deploy-${{ github.ref_name }}.tar.gz \
+            deploy/ \
+            docker-compose.yml \
+            .env.example \
+            preview.html \
+            README.md
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wifi-media-deploy-${{ github.ref_name }}.tar.gz
+          generate_release_notes: true
+          body: |
+            ## 📡 WiFi-Media ${{ github.ref_name }}
+
+            ### نصب سریع | Quick Install | التثبيت السريع
+            ```bash
+            # دانلود و نصب
+            curl -L https://github.com/kish210/wifi-media/releases/download/${{ github.ref_name }}/wifi-media-deploy-${{ github.ref_name }}.tar.gz | tar xz
+            sudo bash deploy/install.sh
+            ```
+
+            ### Docker
+            ```bash
+            git clone https://github.com/kish210/wifi-media
+            docker compose up -d
+            ```
+
+            **Full changelog:** See [CHANGELOG.md](CHANGELOG.md)

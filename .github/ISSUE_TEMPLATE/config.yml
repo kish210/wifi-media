@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 راهنمای نصب | Setup Guide | دليل الإعداد
+    url: https://github.com/kish210/wifi-media/blob/main/deploy/راهنما.md
+    about: مستندات کامل فارسی نصب و پیکربندی
+  - name: 💬 Discussions — سوال و پاسخ
+    url: https://github.com/kish210/wifi-media/discussions
+    about: سوالات عمومی، ایده‌ها و گفتگو

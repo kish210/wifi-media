@@ -1,0 +1,65 @@
+name: ✨ Feature Request | درخواست ویژگی | طلب ميزة
+description: |
+  EN: Suggest a new feature or improvement.
+  FA: یک ویژگی یا بهبود جدید پیشنهاد دهید.
+  AR: اقترح ميزة جديدة أو تحسينًا.
+title: "[FEAT] "
+labels: ["enhancement"]
+
+body:
+  - type: dropdown
+    id: language
+    attributes:
+      label: "🌐 Language / زبان / اللغة"
+      options:
+        - "🇬🇧 English"
+        - "🇮🇷 فارسی"
+        - "🇸🇦 العربية"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "🤔 Problem / چه مشکلی دارد؟ / ما المشكلة؟"
+      placeholder: |
+        FA: الان چه چیزی وجود ندارد یا ناقص است؟
+        EN: What is missing or incomplete right now?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "💡 Proposed Solution | راه‌حل پیشنهادی | الحل المقترح"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "📦 Category | دسته‌بندی | الفئة"
+      options:
+        - "UI / UX"
+        - "Live TV / EPG"
+        - "Media Center"
+        - "Games"
+        - "Watch Party"
+        - "Captive Portal / Network"
+        - "Admin Panel"
+        - "i18n / Language"
+        - "Performance"
+        - "Security"
+        - "Docker / Deployment"
+        - "PWA / Offline"
+        - "Other"
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "🔥 Priority | اولویت | الأولوية"
+      options:
+        - "🔴 Critical"
+        - "🟠 High"
+        - "🟡 Medium"
+        - "🟢 Low / Nice to have"

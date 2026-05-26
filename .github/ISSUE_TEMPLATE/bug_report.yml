@@ -1,0 +1,90 @@
+name: 🐛 Bug Report | گزارش باگ | الإبلاغ عن خطأ
+description: |
+  EN: Report a bug to help us improve.
+  FA: یک باگ گزارش دهید تا بهبود پیدا کنیم.
+  AR: أبلغ عن خطأ لمساعدتنا على التحسين.
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: dropdown
+    id: language
+    attributes:
+      label: "🌐 Language / زبان / اللغة"
+      options:
+        - "🇬🇧 English"
+        - "🇮🇷 فارسی"
+        - "🇸🇦 العربية"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "📝 Description | توضیح | الوصف"
+      description: |
+        EN: Describe the bug clearly.
+        FA: باگ را به وضوح توضیح دهید.
+        AR: صف الخطأ بوضوح.
+      placeholder: |
+        EN: What happened? What did you expect?
+        FA: چه اتفاقی افتاد؟ چه انتظاری داشتید؟
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: "🔁 Steps to Reproduce | مراحل بازتولید | خطوات إعادة الإنتاج"
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: "🧩 Component | بخش | المكوّن"
+      multiple: true
+      options:
+        - "Frontend (UI)"
+        - "Backend (API)"
+        - "Live TV / TVHeadend"
+        - "Media Player"
+        - "Watch Party"
+        - "Captive Portal"
+        - "Docker / Deploy"
+        - "i18n (FA/AR/EN)"
+        - "Other"
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: "💻 OS / System"
+      options:
+        - "Ubuntu Server 22.04"
+        - "Raspberry Pi OS"
+        - "Debian 12"
+        - "Windows (Dev)"
+        - "macOS (Dev)"
+        - "Other"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: "📋 Logs | لاگ‌ها | السجلات"
+      description: "docker compose logs / browser console"
+      render: shell
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "✅ Checklist"
+      options:
+        - label: "I searched existing issues / موضوعات موجود را جستجو کردم"
+          required: true
+        - label: "I am using the latest version / از آخرین نسخه استفاده می‌کنم"
+          required: true

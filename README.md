@@ -8,12 +8,14 @@
 *Works completely offline — no internet required*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/kish210/wifi-media?color=brightgreen)](https://github.com/kish210/wifi-media/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/kish210/wifi-media/ci.yml?label=CI)](https://github.com/kish210/wifi-media/actions)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)](docker-compose.yml)
 [![Node](https://img.shields.io/badge/Node.js-20-339933?logo=node.js)](backend/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](frontend/)
 [![RTL](https://img.shields.io/badge/Language-FA%20%7C%20AR%20%7C%20EN-8b5cf6)](preview.html)
 
-[**Live Preview →**](https://raw.githack.com/YOUR_USERNAME/wifi-media/main/preview.html) · [Setup Guide](#-quick-setup) · [فارسی](#-فارسی)
+[**🔴 Live Preview →**](https://raw.githack.com/kish210/wifi-media/main/preview.html) · [Setup Guide](#-quick-setup) · [فارسی](#-راهنمای-فارسی) · [العربية](#-دليل-عربي)
 
 </div>
 
@@ -80,7 +82,7 @@
 ### 1 — One-command install (Linux)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/wifi-media
+git clone https://github.com/kish210/wifi-media
 cd wifi-media/deploy
 sudo bash install.sh
 ```
@@ -202,30 +204,103 @@ All devices that can connect to WiFi and open a browser:
 
 ---
 
-## 🌍 فارسی
+## 🌍 راهنمای فارسی
 
-WiFi-Media یک پلتفرم سرگرمی آفلاین برای شبکه‌های محلی است.
+<div dir="rtl">
 
-**ویژگی‌ها:**
-- 📺 تلویزیون زنده با TVHeadend
-- 🎬 پخش فیلم و سریال
-- 🎮 بازی‌های چندنفره روی LAN
-- 🎉 تماشای گروهی با chat
-- 📶 Captive Portal — redirect خودکار همه دستگاه‌ها
-- 🌐 پشتیبانی کامل از فارسی و عربی (RTL)
+**WiFi-Media** یک پلتفرم سرگرمی کامل برای شبکه‌های محلی است — بدون نیاز به اینترنت.
 
-**نصب سریع:**
+### ✨ ویژگی‌ها
+
+| بخش | توضیح |
+|-----|-------|
+| 📺 **تلویزیون زنده** | ادغام با TVHeadend، برنامه EPG، پخش HLS |
+| 🎬 **مرکز رسانه** | فیلم، سریال، موسیقی، ویدیو — آفلاین |
+| 🎮 **بازی‌های LAN** | Trivia، Pong، Chess، Word Chain |
+| 🎉 **تماشای گروهی** | پخش همزمان، چت real-time |
+| 📶 **Captive Portal** | redirect خودکار همه دستگاه‌ها (iOS/Android/Windows) |
+| 🌐 **چندزبانه** | پشتیبانی کامل فارسی و عربی (RTL) |
+
+### 🚀 نصب سریع
+
 ```bash
-git clone https://github.com/YOUR_USERNAME/wifi-media
+git clone https://github.com/kish210/wifi-media
 cd wifi-media/deploy
 sudo bash install.sh
 ```
+
+تنظیمات سفارشی:
+```bash
+sudo WIFI_SSID="شبکه من" WIFI_PASS="رمزعبور" bash install.sh
+```
+
+### 📋 پیش‌نیازها
+
+- Ubuntu Server 22.04 LTS یا Raspberry Pi OS 64-bit
+- آداپتور WiFi با قابلیت Access Point
+- Docker و Docker Compose v2
+- حداقل ۴ گیگابایت RAM (Raspberry Pi 4 به بالا)
+
+### 🔧 سخت‌افزار پیشنهادی
+
+| سخت‌افزار | قیمت | مناسب برای |
+|-----------|-------|------------|
+| Raspberry Pi 4 (4GB) | ~۳,۵۰۰,۰۰۰ تومان | استقرار کوچک، ۲۰ کاربر |
+| Intel N100 Mini-PC | ~۶,۵۰۰,۰۰۰ تومان | متوسط، ۵۰ کاربر |
+| Intel NUC | ~۸,۵۰۰,۰۰۰ تومان | بزرگ، ۱۰۰+ کاربر |
+
+📖 [راهنمای کامل نصب فارسی ←](deploy/راهنما.md)
+
+</div>
+
+---
+
+## 🌍 دليل عربي
+
+<div dir="rtl">
+
+**WiFi-Media** منصة ترفيه محلية كاملة للشبكات المحلية — بدون الحاجة إلى الإنترنت.
+
+### ✨ الميزات
+
+| القسم | الوصف |
+|-------|-------|
+| 📺 **البث المباشر** | تكامل TVHeadend، دليل EPG، بث HLS |
+| 🎬 **مركز الوسائط** | أفلام، مسلسلات، موسيقى — بدون إنترنت |
+| 🎮 **ألعاب الشبكة** | Trivia، Pong، Chess، Word Chain |
+| 🎉 **حفلة المشاهدة** | تشغيل متزامن، دردشة فورية |
+| 📶 **Captive Portal** | إعادة توجيه تلقائية لجميع الأجهزة |
+| 🌐 **متعدد اللغات** | دعم كامل للعربية والفارسية (RTL) |
+
+### 🚀 التثبيت السريع
+
+```bash
+git clone https://github.com/kish210/wifi-media
+cd wifi-media/deploy
+sudo bash install.sh
+```
+
+### 📋 المتطلبات
+
+- Ubuntu Server 22.04 LTS أو Raspberry Pi OS 64-bit
+- محول WiFi يدعم وضع نقطة الوصول
+- Docker و Docker Compose v2
+- ذاكرة وصول عشوائي لا تقل عن 4 جيجابايت
+
+</div>
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome in any language! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
 ## 📄 License
 
-MIT © 2024 — Free for personal and commercial use.
+MIT © 2024 — Free for personal and commercial use.  
+See [LICENSE](LICENSE) for full text.
 
 ---
 
