@@ -14,8 +14,9 @@
 [![Node](https://img.shields.io/badge/Node.js-20-339933?logo=node.js)](backend/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](frontend/)
 [![RTL](https://img.shields.io/badge/Language-FA%20%7C%20AR%20%7C%20EN-8b5cf6)](preview.html)
+[![By](https://img.shields.io/badge/By-سماع_رایانه_کیش-1a3a6e?logo=wifi&logoColor=90bfff)](https://kishwifi.com)
 
-[**🔴 Live Preview →**](https://raw.githack.com/kish210/wifi-media/main/preview.html) · [Setup Guide](#-quick-setup) · [فارسی](#-راهنمای-فارسی) · [العربية](#-دليل-عربي)
+[**🔴 Live Preview →**](https://raw.githack.com/kish210/wifi-media/main/preview.html) · [Setup Guide](#-quick-setup) · [فارسی](#-راهنمای-فارسی) · [العربية](#-دليل-عربي) · [🌐 kishwifi.com](https://kishwifi.com)
 
 </div>
 
@@ -297,9 +298,26 @@ Contributions are welcome in any language! See [CONTRIBUTING.md](CONTRIBUTING.md
 
 ---
 
+## 🏢 Powered By | توسعه‌یافته توسط
+
+<div align="center">
+
+<a href="https://kishwifi.com" target="_blank">
+  <img src="https://img.shields.io/badge/سماع_رایانه_کیش-kishwifi.com-1a3a6e?style=for-the-badge&logo=wifi&logoColor=90bfff" alt="سماع رایانه کیش — kishwifi.com"/>
+</a>
+
+**[سماع رایانه کیش](https://kishwifi.com)** | kishwifi.com
+
+WiFi-Media is developed and maintained by **Sama Rayaneh Kish (سماع رایانه کیش)**.  
+Providing local network solutions since day one.
+
+</div>
+
+---
+
 ## 📄 License
 
-MIT © 2024 — Free for personal and commercial use.  
+MIT © 2024 Sama Rayaneh Kish (سماع رایانه کیش) — Free for personal and commercial use.  
 See [LICENSE](LICENSE) for full text.
 
 ---
