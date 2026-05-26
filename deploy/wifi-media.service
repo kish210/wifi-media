@@ -1,0 +1,43 @@
+# ══════════════════════════════════════════════════════════════════════════
+# wifi-media.service — Systemd Service
+# اجرای خودکار WiFi-Media پس از boot
+# ══════════════════════════════════════════════════════════════════════════
+[Unit]
+Description=WiFi-Media Local Entertainment Platform
+Documentation=https://github.com/yourname/wifi-media
+After=docker.service network-online.target hostapd.service dnsmasq.service
+Requires=docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=__DEPLOY_DIR__
+
+# ── اجرا ─────────────────────────────────────────────────────────────────
+ExecStartPre=/usr/bin/docker compose pull --quiet 2>/dev/null || true
+ExecStart=/usr/bin/docker compose up -d --remove-orphans
+ExecStop=/usr/bin/docker compose down
+ExecReload=/usr/bin/docker compose restart
+
+# ── iptables را مجدداً اعمال کن (بعد از reboot پاک می‌شود) ────────────────
+ExecStartPre=/bin/bash /opt/wifi-media-iptables.sh
+
+# ── timeout ──────────────────────────────────────────────────────────────
+TimeoutStartSec=300
+TimeoutStopSec=60
+
+# ── Restart ───────────────────────────────────────────────────────────────
+Restart=on-failure
+RestartSec=30
+
+# ── محیط ─────────────────────────────────────────────────────────────────
+EnvironmentFile=-__DEPLOY_DIR__/.env
+
+# ── لاگ ──────────────────────────────────────────────────────────────────
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=wifi-media
+
+[Install]
+WantedBy=multi-user.target

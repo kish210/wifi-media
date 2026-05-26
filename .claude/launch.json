@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wifi-media-preview",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": [
+        "compose", "up", "preview", "--no-deps"
+      ],
+      "port": 8181
+    }
+  ]
+}

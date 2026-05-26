@@ -1,0 +1,105 @@
+version: "3.9"
+
+services:
+  # ─── WiFi-Media Backend ────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: wifi-media-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - JWT_SECRET=${JWT_SECRET:-wifi-media-secret-change-me}
+      - TVHEADEND_URL=${TVHEADEND_URL:-http://tvheadend:9981}
+      - TVHEADEND_USER=${TVHEADEND_USER:-admin}
+      - TVHEADEND_PASS=${TVHEADEND_PASS:-admin}
+      - DB_PATH=/data/wifi-media.db
+      - MEDIA_PATH=/media
+    volumes:
+      - ./data:/data
+      - ${MEDIA_PATH:-./media}:/media
+    networks:
+      - wifi-media-net
+    depends_on:
+      - tvheadend
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:4000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─── WiFi-Media Frontend ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: wifi-media-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    networks:
+      - wifi-media-net
+    depends_on:
+      - backend
+
+  # ─── TVHeadend ────────────────────────────────────────────────────────────
+  tvheadend:
+    image: linuxserver/tvheadend:latest
+    container_name: wifi-media-tvheadend
+    restart: unless-stopped
+    ports:
+      - "9981:9981"
+      - "9982:9982"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./tvheadend/config:/config
+      - ./tvheadend/recordings:/recordings
+      - ${MEDIA_PATH:-./media}:/media
+    networks:
+      - wifi-media-net
+
+  # ─── Preview (interactive UI demo — no build needed) ─────────────────────
+  preview:
+    image: nginx:alpine
+    container_name: wifi-media-preview
+    restart: unless-stopped
+    ports:
+      - "8181:80"
+    volumes:
+      - ./preview.html:/usr/share/nginx/html/index.html:ro
+    networks:
+      - wifi-media-net
+
+  # ─── Redis (sessions + pub/sub) ───────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: wifi-media-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - wifi-media-net
+
+networks:
+  wifi-media-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  redis-data:

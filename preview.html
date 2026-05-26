@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WiFi-Media — Local Entertainment Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#fff;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#0f0f1a}
+::-webkit-scrollbar-thumb{background:#252545;border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:#3b82f6}
+::selection{background:rgba(59,130,246,.3)}
+.glass{backdrop-filter:blur(12px);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+.glass-strong{backdrop-filter:blur(20px);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1)}
+.text-gradient{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.shadow-glow{box-shadow:0 0 30px rgba(59,130,246,0.35)}
+.channel-card{border:1px solid rgba(255,255,255,0.07);border-radius:16px;background:rgba(255,255,255,0.04);transition:all .3s;cursor:pointer;position:relative}
+.channel-card:hover{border-color:rgba(59,130,246,.5);box-shadow:0 0 20px rgba(59,130,246,0.15)}
+.channel-card.active{border-color:#3b82f6;box-shadow:0 0 30px rgba(59,130,246,0.3);background:rgba(59,130,246,0.07)}
+.media-card{cursor:pointer;transition:all .3s;flex-shrink:0}
+.media-card:hover{transform:translateY(-4px) scale(1.02)}
+.media-card:hover .media-overlay{opacity:1!important}
+.poster{aspect-ratio:2/3;border-radius:12px;overflow:hidden;position:relative}
+.progress-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1)}
+.progress-fill{height:100%;border-radius:99px;background:#3b82f6}
+.epg-bar{height:3px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:10px}
+.epg-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#3b82f6,#8b5cf6)}
+.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+.scrollbar-hide::-webkit-scrollbar{display:none}
+.h-row{display:flex;gap:16px;overflow-x:auto;padding-bottom:8px}
+.h-row::-webkit-scrollbar{height:3px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid}
+.badge-blue{background:rgba(59,130,246,.15);color:#3b82f6;border-color:rgba(59,130,246,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)}
+.badge-green{background:rgba(16,185,129,.15);color:#10b981;border-color:rgba(16,185,129,.3)}
+.badge-ghost{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.08)}
+.badge-amber{background:rgba(245,158,11,.15);color:#fbbf24;border-color:rgba(245,158,11,.3)}
+.btn-primary{padding:9px 20px;border-radius:12px;font-weight:600;font-size:14px;background:#3b82f6;color:#fff;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary:hover{background:#2563eb;transform:translateY(-1px)}
+.btn-ghost{padding:9px 20px;border-radius:12px;font-weight:600;font-size:14px;background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .15s}
+.btn-ghost:hover{color:#fff;background:rgba(255,255,255,.07)}
+.input{width:100%;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:13px;outline:none;transition:border-color .2s}
+.input:focus{border-color:rgba(59,130,246,.55)}
+.input::placeholder{color:rgba(255,255,255,.25)}
+.page{display:none}.page.active{display:block;animation:fadeUp .35s ease-out}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes liveDot{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.live-dot{animation:liveDot 1.2s ease-in-out infinite}
+.nav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;transition:all .2s;cursor:pointer;color:rgba(255,255,255,.45);font-size:14px;font-weight:500;text-decoration:none;border:1px solid transparent}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-link.active{color:#3b82f6;background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.2)}
+.nav-link svg{width:17px;height:17px;flex-shrink:0}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:#0f0f1a;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;padding:16px 0;z-index:40}
+.main-content{margin-left:220px;padding:72px 28px 96px;min-height:100vh}
+.topbar{position:fixed;left:220px;right:0;top:0;height:58px;background:rgba(10,10,15,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05);z-index:30;display:flex;align-items:center;padding:0 28px;gap:12px}
+.player-bar{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(10,10,15,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.07);z-index:50;display:flex;align-items:center;padding:0 24px;gap:20px;transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.player-bar.show{transform:translateY(0)}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(12px);background:#1e1e35;border:1px solid rgba(59,130,246,.3);padding:10px 22px;border-radius:12px;font-size:13px;opacity:0;transition:all .35s;z-index:200;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:60;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{background:#0f0f1a;border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:24px;width:100%;max-width:420px;transform:scale(.93);transition:transform .3s}
+.modal-bg.open .modal{transform:scale(1)}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600}
+.see-all{font-size:12px;color:rgba(255,255,255,.35);background:transparent;border:none;cursor:pointer;transition:color .2s}
+.see-all:hover{color:rgba(255,255,255,.7)}
+select.input{cursor:pointer}
+/* ── RTL / i18n ─────────────────────────────────────────────────────────── */
+[dir=rtl] .sidebar{left:auto!important;right:0;border-right:none;border-left:1px solid rgba(255,255,255,.05)}
+[dir=rtl] .main-content{margin-left:0!important;margin-right:220px}
+[dir=rtl] .topbar{left:0!important;right:220px}
+[dir=rtl] .nav-link{flex-direction:row-reverse}
+[dir=rtl] .section-header{flex-direction:row-reverse}
+[dir=rtl] .h-row{direction:rtl}
+[dir=rtl] .player-bar{direction:rtl}
+[dir=rtl] .badge{direction:ltr;unicode-bidi:embed}
+[dir=rtl] .topbar>span{margin-right:0;margin-left:auto}
+[dir=rtl] .topbar>div{margin-left:0!important;margin-right:auto}
+body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
+.code-block{position:relative;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;font-family:monospace;font-size:12px;color:#06b6d4;overflow-x:auto;line-height:1.7;direction:ltr;text-align:left}
+.copy-btn{position:absolute;top:8px;right:8px;padding:3px 10px;border-radius:7px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25);color:#3b82f6;font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s}
+.copy-btn:hover{background:rgba(59,130,246,.3)}
+.step-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);font-size:12px;font-weight:700;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<div class="toast" id="toast"></div>
+
+<!-- ── MODAL ───────────────────────────────────────────────── -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalInner"></div>
+</div>
+
+<!-- ── PLAYER BAR ─────────────────────────────────────────── -->
+<div class="player-bar" id="playerBar">
+  <div id="playerThumb" style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#1a1a2e,#252545);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🎬</div>
+  <div style="flex:1;min-width:0">
+    <p id="playerTitle" style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">–</p>
+    <p id="playerSub" style="font-size:11px;color:rgba(255,255,255,.4)">–</p>
+  </div>
+  <div style="flex:2;max-width:340px">
+    <div id="seekBar" onclick="seekClick(event,this)" style="height:3px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;cursor:pointer;position:relative">
+      <div id="progFill" style="height:100%;width:28%;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:99px;transition:width .4s linear"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px">
+      <span id="curTime" style="font-size:10px;color:rgba(255,255,255,.3)">0:00</span>
+      <span id="totTime" style="font-size:10px;color:rgba(255,255,255,.3)">–</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button onclick="skip(-10)" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);cursor:pointer">⏮</button>
+    <button id="playBtn" onclick="togglePlay()" style="width:38px;height:38px;border-radius:10px;border:none;background:#3b82f6;color:#fff;cursor:pointer;font-size:17px">▶</button>
+    <button onclick="skip(10)"  style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);cursor:pointer">⏭</button>
+    <button id="muteBtn" onclick="toggleMute()" style="width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);cursor:pointer">🔊</button>
+    <button onclick="closePlayer()" style="width:28px;height:28px;border-radius:8px;border:none;background:rgba(255,255,255,.05);color:rgba(255,255,255,.35);cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div style="padding:0 14px 20px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="position:relative">
+        <div style="position:absolute;inset:0;filter:blur(8px);background:rgba(59,130,246,.45);border-radius:10px"></div>
+        <div style="position:relative;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">WiFi·Media</div>
+        <div id="sidebarSub" data-i18n="local_ent" style="font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase">LOCAL ENTERTAINMENT</div>
+      </div>
+    </div>
+  </div>
+  <nav style="flex:1;padding:0 8px;overflow-y:auto" class="scrollbar-hide">
+    <a class="nav-link active" data-page="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <span data-i18n="home">Home</span>
+    </a>
+    <a class="nav-link" data-page="live">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17,2 12,7 7,2"/></svg>
+      <span data-i18n="live_tv">Live TV</span>
+      <span class="badge badge-red" style="margin-left:auto;font-size:9px;padding:1px 6px">LIVE</span>
+    </a>
+    <a class="nav-link" data-page="movies">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+      <span data-i18n="movies">Movies</span>
+    </a>
+    <a class="nav-link" data-page="series">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+      <span data-i18n="series">Series</span>
+    </a>
+    <a class="nav-link" data-page="music">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <span data-i18n="music">Music</span>
+    </a>
+    <a class="nav-link" data-page="games">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13" stroke-width="3"/><line x1="18" y1="11" x2="18.01" y2="11" stroke-width="3"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
+      <span data-i18n="games">Games</span>
+    </a>
+    <a class="nav-link" data-page="party">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span data-i18n="watch_party">Watch Party</span>
+    </a>
+    <div style="height:1px;background:rgba(255,255,255,.05);margin:8px 4px"></div>
+    <a class="nav-link" data-page="network">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+      <span data-i18n="network">Network</span>
+    </a>
+    <a class="nav-link" data-page="setup">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9C11.17 3.76 5.84 1.74 3.8 3.8c-2.04 2.04-.02 7.37 4.5 11.9s9.87 6.56 11.9 4.5z"/><path d="M15.7 15.7c4.52-4.52 6.54-9.85 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5C3.78 12.92 1.76 18.25 3.8 20.3c2.05 2.04 7.38.02 11.9-4.6z"/></svg>
+      <span data-i18n="setup_guide">Setup Guide</span>
+    </a>
+    <a class="nav-link" data-page="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span data-i18n="settings">Settings</span>
+    </a>
+    <a class="nav-link" data-page="admin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-i18n="admin">Admin</span>
+    </a>
+  </nav>
+  <div style="padding:8px 12px 0">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)">
+      <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">A</div>
+      <div style="flex:1;min-width:0">
+        <p style="font-size:12px;font-weight:600">Administrator</p>
+        <p style="font-size:10px;color:rgba(255,255,255,.35)">admin</p>
+      </div>
+      <a data-page="login" style="color:rgba(255,255,255,.25);cursor:pointer;font-size:13px" title="Sign out">↩</a>
+    </div>
+  </div>
+</aside>
+
+<!-- ── TOPBAR ─────────────────────────────────────────────── -->
+<div class="topbar">
+  <span id="pageTitle" style="font-size:15px;font-weight:600;color:rgba(255,255,255,.8)">Home</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+    <div style="position:relative">
+      <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="input" style="width:220px;padding:7px 12px 7px 32px;font-size:12px" placeholder="Search movies, shows…"/>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);font-size:11px;font-weight:600;color:#10b981">
+      <span class="live-dot" style="width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block"></span><span data-i18n="tvh_online">TVH Online</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:10px;background:rgba(255,255,255,.04);font-size:11px;color:rgba(255,255,255,.35)">
+      <span class="live-dot" style="width:5px;height:5px;border-radius:50%;background:#10b981;display:inline-block"></span>24 <span data-i18n="online">online</span>
+    </div>
+    <div id="langBtn" onclick="cycleLang()" title="Language / زبان / اللغة" style="display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:10px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);font-size:11px;font-weight:700;color:#a78bfa;cursor:pointer;transition:all .2s;letter-spacing:.05em">
+      🌐 <span id="langLabel">EN</span>
+    </div>
+    <div data-page="profile" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer">A</div>
+  </div>
+</div>
+
+<!-- ── PAGES ───────────────────────────────────────────────── -->
+<main class="main-content">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <!-- Hero banner -->
+    <div style="position:relative;border-radius:24px;height:220px;overflow:hidden;margin-bottom:32px;background:linear-gradient(135deg,#0d1b3e,#1a0d3e,#0d2b3e)">
+      <div style="position:absolute;top:0;right:0;width:260px;height:260px;background:rgba(59,130,246,.13);border-radius:50%;filter:blur(70px)"></div>
+      <div style="position:absolute;bottom:-30px;right:100px;width:300px;height:300px;background:rgba(139,92,246,.1);border-radius:50%;filter:blur(90px)"></div>
+      <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.025) 1px,transparent 1px);background-size:28px 28px"></div>
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:28px 32px">
+        <p class="hero-greeting" style="color:rgba(255,255,255,.5);font-size:13px;margin-bottom:4px">Good evening,</p>
+        <h1 class="hero-title" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;margin-bottom:16px">Welcome back, Admin 👋</h1>
+        <div style="display:flex;gap:10px">
+          <button class="btn-primary hero-btn-live" style="font-size:13px;padding:8px 18px" onclick="nav('live')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17,2 12,7 7,2"/></svg>Watch Live TV
+          </button>
+          <button class="btn-ghost hero-btn-movies" style="font-size:13px;padding:8px 18px" onclick="nav('movies')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>Browse Movies
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Continue Watching row -->
+    <div style="margin-bottom:28px">
+      <div class="section-header">
+        <div class="section-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg><span class="cw-title">Continue Watching</span></div>
+        <button class="see-all cw-seeall">See all →</button>
+      </div>
+      <div class="h-row scrollbar-hide" id="continueRow"></div>
+    </div>
+    <!-- Live Now -->
+    <div style="margin-bottom:28px">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="live-dot" style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block"></span>
+          <span style="color:#ef4444;font-size:13px;font-weight:700">LIVE</span>&nbsp;<span class="livenow-label">Now</span>
+        </div>
+        <button class="see-all all-channels-btn" onclick="nav('live')">All Channels →</button>
+      </div>
+      <div id="liveNowGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px"></div>
+    </div>
+    <!-- Trending -->
+    <div>
+      <div class="section-header">
+        <div class="section-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"><polyline points="22,7 13.5,15.5 8.5,10.5 2,17"/><polyline points="16,7 22,7 22,13"/></svg><span class="trend-title">Trending</span></div>
+        <button class="see-all trend-seeall" onclick="nav('movies')">See all →</button>
+      </div>
+      <div class="h-row scrollbar-hide" id="trendingRow"></div>
+    </div>
+  </div>
+
+  <!-- LIVE TV -->
+  <div class="page" id="page-live">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17,2 12,7 7,2"/></svg>
+        <h2 style="font-size:19px;font-weight:600">Live TV</h2>
+        <span class="badge badge-red">LIVE</span>
+        <span style="font-size:13px;color:rgba(255,255,255,.4)">47 channels</span>
+      </div>
+      <div style="margin-left:auto">
+        <div style="position:relative">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="input" style="padding:8px 12px 8px 32px;font-size:12px;width:210px" placeholder="Search channels…"/>
+        </div>
+      </div>
+    </div>
+    <!-- Category pills -->
+    <div id="catPills" style="display:flex;gap:8px;overflow-x:auto;margin-bottom:20px;padding-bottom:4px"></div>
+    <div id="channelGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px"></div>
+  </div>
+
+  <!-- MOVIES / SERIES / MUSIC shared -->
+  <div class="page" id="page-movies">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:18px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        <h2 style="font-size:19px;font-weight:600">Library</h2>
+        <span id="libCount" style="font-size:13px;color:rgba(255,255,255,.4)">342 items</span>
+      </div>
+      <div style="margin-left:auto">
+        <div style="position:relative">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="input" style="padding:8px 12px 8px 32px;font-size:12px;width:220px" placeholder="Search library…"/>
+        </div>
+      </div>
+    </div>
+    <div id="libTabs" style="display:flex;gap:8px;margin-bottom:22px"></div>
+    <div id="libGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px"></div>
+  </div>
+
+  <div class="page" id="page-series">
+    <h2 style="font-size:19px;font-weight:600;margin-bottom:20px">Series</h2>
+    <div id="seriesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px"></div>
+  </div>
+
+  <div class="page" id="page-music">
+    <h2 style="font-size:19px;font-weight:600;margin-bottom:20px">Music</h2>
+    <div id="musicGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:16px"></div>
+  </div>
+
+  <!-- GAMES -->
+  <div class="page" id="page-games">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13" stroke-width="3"/><line x1="18" y1="11" x2="18.01" y2="11" stroke-width="3"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
+      <h2 style="font-size:19px;font-weight:600">Games</h2>
+    </div>
+    <p style="color:rgba(255,255,255,.4);font-size:13px;margin-bottom:22px">LAN games — no internet required. Play with anyone on the network.</p>
+    <div id="gamesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px"></div>
+  </div>
+
+  <!-- WATCH PARTY -->
+  <div class="page" id="page-party">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <h2 style="font-size:19px;font-weight:600">Watch Party</h2>
+        <span class="badge badge-blue">3 active</span>
+      </div>
+      <button class="btn-primary" onclick="openCreateRoom()">+ Create Room</button>
+    </div>
+    <div id="roomsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px"></div>
+  </div>
+
+  <!-- NETWORK -->
+  <div class="page" id="page-network">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+        <h2 style="font-size:19px;font-weight:600">Network Status</h2>
+      </div>
+      <button class="btn-ghost" style="font-size:12px;padding:7px 14px" onclick="toast('⟳ Refreshed')">⟳ Refresh</button>
+    </div>
+    <div id="netStatus"></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="page-admin">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:22px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <h2 style="font-size:19px;font-weight:600">Admin Panel</h2>
+    </div>
+    <div id="adminContent"></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:22px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <h2 style="font-size:19px;font-weight:600">Settings</h2>
+    </div>
+    <div id="settingsContent" style="max-width:580px"></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="page" id="page-profile">
+    <div id="profileContent" style="max-width:680px"></div>
+  </div>
+
+  <!-- SETUP GUIDE -->
+  <div class="page" id="page-setup">
+    <div id="setupContent"></div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="page" id="page-login" style="position:fixed;inset:0;background:#03030a;z-index:80;display:none;align-items:center;justify-content:center">
+    <div style="width:100%;max-width:380px;padding:20px">
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+          </div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">WiFi·Media</div>
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,.4)">Local Network Entertainment</p>
+      </div>
+      <div class="glass-strong" style="border-radius:24px;padding:24px">
+        <div style="display:flex;gap:4px;padding:4px;background:rgba(255,255,255,.05);border-radius:12px;margin-bottom:18px">
+          <button style="flex:1;padding:8px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Sign In</button>
+          <button style="flex:1;padding:8px;border-radius:8px;border:none;background:transparent;color:rgba(255,255,255,.4);font-size:13px;font-weight:600;cursor:pointer">Register</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <label style="font-size:11px;color:rgba(255,255,255,.5);display:block;margin-bottom:5px">Username</label>
+            <input class="input" value="admin"/>
+          </div>
+          <div>
+            <label style="font-size:11px;color:rgba(255,255,255,.5);display:block;margin-bottom:5px">Password</label>
+            <input class="input" type="password" value="admin"/>
+          </div>
+          <button class="btn-primary" style="width:100%;justify-content:center;padding:12px;margin-top:4px" onclick="doLogin()">Sign In</button>
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)">
+          <p style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-bottom:10px">Quick access</p>
+          <div style="display:flex;gap:8px">
+            <button onclick="doLogin()" style="flex:1;padding:8px;border-radius:10px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#3b82f6;font-size:12px;font-weight:600;cursor:pointer">Admin</button>
+            <button onclick="doLogin()" style="flex:1;padding:8px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:12px;font-weight:600;cursor:pointer">Guest</button>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:11px;color:rgba(255,255,255,.2);margin-top:14px">📶 Connect to the local Wi-Fi first</p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ─── i18n ──────────────────────────────────────────────────────────────────
+const STRINGS = {
+  en:{
+    home:'Home',live_tv:'Live TV',movies:'Movies',series:'Series',music:'Music',
+    games:'Games',watch_party:'Watch Party',network:'Network',settings:'Settings',
+    admin:'Admin',setup_guide:'Setup Guide',local_ent:'LOCAL ENTERTAINMENT',
+    search:'Search movies, shows…',tvh_online:'TVH Online',online:'online',
+    good_evening:'Good evening,',welcome_back:'Welcome back, Admin 👋',
+    watch_live:'Watch Live TV',browse_movies:'Browse Movies',
+    continue_watching:'Continue Watching',see_all:'See all →',
+    live_now:'Now',all_channels:'All Channels →',trending:'Trending',
+    channels:'channels',search_channels:'Search channels…',
+    cat_all:'All',cat_sports:'Sports',cat_news:'News',cat_ent:'Entertainment',
+    cat_movies:'Movies',cat_kids:'Kids',cat_docs:'Docs',cat_music:'Music',
+    library:'Library',items:'items',search_library:'Search library…',
+    tab_movies:'Movies',tab_series:'Series',tab_music:'Music',tab_videos:'Videos',
+    games_title:'Games',games_sub:'LAN games — no internet required. Play with anyone on the network.',
+    players:'players',coming_soon:'Soon',
+    active_rooms:'active',create_room:'+ Create Room',join_room:'↩ Join Room',
+    room_name:'Room Name',room_ph:'Movie Night 🍿',
+    by_host:'by',st_playing:'playing',st_paused:'paused',st_waiting:'waiting',
+    net_status:'Network Status',refresh:'⟳ Refresh',
+    svc_app:'WiFi-Media',svc_tvh:'TVHeadend',svc_lib:'Media Library',
+    uptime:'Uptime: 4h 32m',streams:'3 active streams',files:'342 files indexed',
+    endpoints:'🔌 Service Endpoints',
+    settings_title:'Settings',disp_name:'Display Name',uname:'Username',
+    theme:'Theme',lang_label:'Language',disp_lang:'Display Language',
+    net_section:'Network',save_btn:'Save Changes',saved_btn:'✓ Saved!',
+    admin_title:'Admin Panel',
+    setup_title:'Setup Guide',
+    sign_in:'Sign In',register:'Register',username_l:'Username',password_l:'Password',
+    quick_access:'Quick access',wifi_first:'📶 Connect to the local Wi-Fi first',
+    continue_w:'⏱️ Continue Watching',
+  },
+  fa:{
+    home:'خانه',live_tv:'پخش زنده',movies:'فیلم‌ها',series:'سریال‌ها',music:'موسیقی',
+    games:'بازی‌ها',watch_party:'تماشای گروهی',network:'شبکه',settings:'تنظیمات',
+    admin:'مدیریت',setup_guide:'راهنمای نصب',local_ent:'سرگرمی محلی',
+    search:'جستجو در فیلم‌ها…',tvh_online:'TVH آنلاین',online:'آنلاین',
+    good_evening:'شب بخیر،',welcome_back:'خوش آمدید، ادمین 👋',
+    watch_live:'تماشای پخش زنده',browse_movies:'مرور فیلم‌ها',
+    continue_watching:'ادامه تماشا',see_all:'مشاهده همه ←',
+    live_now:'اکنون',all_channels:'همه کانال‌ها ←',trending:'پرطرفدار',
+    channels:'کانال',search_channels:'جستجو در کانال‌ها…',
+    cat_all:'همه',cat_sports:'ورزشی',cat_news:'خبری',cat_ent:'سرگرمی',
+    cat_movies:'فیلم',cat_kids:'کودک',cat_docs:'مستند',cat_music:'موسیقی',
+    library:'کتابخانه',items:'آیتم',search_library:'جستجو در کتابخانه…',
+    tab_movies:'فیلم‌ها',tab_series:'سریال‌ها',tab_music:'موسیقی',tab_videos:'ویدیوها',
+    games_title:'بازی‌ها',games_sub:'بازی‌های شبکه محلی — بدون نیاز به اینترنت. با هر کسی روی شبکه بازی کنید.',
+    players:'بازیکن',coming_soon:'به زودی',
+    active_rooms:'فعال',create_room:'+ ایجاد اتاق',join_room:'↩ ورود به اتاق',
+    room_name:'نام اتاق',room_ph:'شب فیلم 🍿',
+    by_host:'توسط',st_playing:'در حال پخش',st_paused:'متوقف',st_waiting:'در انتظار',
+    net_status:'وضعیت شبکه',refresh:'⟳ بروزرسانی',
+    svc_app:'WiFi-Media',svc_tvh:'TVHeadend',svc_lib:'کتابخانه رسانه',
+    uptime:'آپتایم: ۴ ساعت ۳۲ دقیقه',streams:'۳ استریم فعال',files:'۳۴۲ فایل ایندکس شده',
+    endpoints:'🔌 آدرس سرویس‌ها',
+    settings_title:'تنظیمات',disp_name:'نام نمایشی',uname:'نام کاربری',
+    theme:'پوسته',lang_label:'زبان',disp_lang:'زبان نمایش',
+    net_section:'شبکه',save_btn:'ذخیره تغییرات',saved_btn:'✓ ذخیره شد!',
+    admin_title:'پنل مدیریت',
+    setup_title:'راهنمای نصب',
+    sign_in:'ورود',register:'ثبت‌نام',username_l:'نام کاربری',password_l:'رمز عبور',
+    quick_access:'دسترسی سریع',wifi_first:'📶 ابتدا به Wi-Fi محلی متصل شوید',
+    continue_w:'⏱️ ادامه تماشا',
+  },
+  ar:{
+    home:'الرئيسية',live_tv:'البث المباشر',movies:'الأفلام',series:'المسلسلات',music:'الموسيقى',
+    games:'الألعاب',watch_party:'المشاهدة الجماعية',network:'الشبكة',settings:'الإعدادات',
+    admin:'الإدارة',setup_guide:'دليل الإعداد',local_ent:'ترفيه محلي',
+    search:'البحث في الأفلام…',tvh_online:'TVH متصل',online:'متصل',
+    good_evening:'مساء الخير،',welcome_back:'أهلاً بعودتك، المدير 👋',
+    watch_live:'مشاهدة البث المباشر',browse_movies:'تصفح الأفلام',
+    continue_watching:'مواصلة المشاهدة',see_all:'مشاهدة الكل ←',
+    live_now:'الآن',all_channels:'كل القنوات ←',trending:'الأكثر شيوعاً',
+    channels:'قناة',search_channels:'البحث في القنوات…',
+    cat_all:'الكل',cat_sports:'رياضة',cat_news:'أخبار',cat_ent:'ترفيه',
+    cat_movies:'أفلام',cat_kids:'أطفال',cat_docs:'وثائقية',cat_music:'موسيقى',
+    library:'المكتبة',items:'عنصر',search_library:'البحث في المكتبة…',
+    tab_movies:'الأفلام',tab_series:'المسلسلات',tab_music:'الموسيقى',tab_videos:'مقاطع',
+    games_title:'الألعاب',games_sub:'ألعاب الشبكة المحلية — لا إنترنت مطلوب. العب مع أي شخص على الشبكة.',
+    players:'لاعب',coming_soon:'قريباً',
+    active_rooms:'نشط',create_room:'+ إنشاء غرفة',join_room:'↩ انضم للغرفة',
+    room_name:'اسم الغرفة',room_ph:'ليلة الأفلام 🍿',
+    by_host:'بواسطة',st_playing:'يعرض',st_paused:'متوقف',st_waiting:'في انتظار',
+    net_status:'حالة الشبكة',refresh:'⟳ تحديث',
+    svc_app:'WiFi-Media',svc_tvh:'TVHeadend',svc_lib:'مكتبة الوسائط',
+    uptime:'وقت التشغيل: 4 ساعات',streams:'3 بثوث نشطة',files:'342 ملف مفهرس',
+    endpoints:'🔌 نقاط الخدمة',
+    settings_title:'الإعدادات',disp_name:'اسم العرض',uname:'اسم المستخدم',
+    theme:'السمة',lang_label:'اللغة',disp_lang:'لغة العرض',
+    net_section:'الشبكة',save_btn:'حفظ التغييرات',saved_btn:'✓ تم الحفظ!',
+    admin_title:'لوحة الإدارة',
+    setup_title:'دليل الإعداد',
+    sign_in:'تسجيل الدخول',register:'تسجيل',username_l:'اسم المستخدم',password_l:'كلمة المرور',
+    quick_access:'وصول سريع',wifi_first:'📶 اتصل بـ Wi-Fi المحلي أولاً',
+    continue_w:'⏱️ مواصلة المشاهدة',
+  }
+};
+let currentLang = localStorage.getItem('wm_lang') || 'en';
+const LANGS = ['en','fa','ar'];
+const LANG_LABELS = {en:'EN',fa:'FA فا',ar:'AR ع'};
+
+function t(key){ return (STRINGS[currentLang]||STRINGS.en)[key] || STRINGS.en[key] || key; }
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('wm_lang', lang);
+  const isRTL = lang==='fa'||lang==='ar';
+  document.documentElement.dir = isRTL?'rtl':'ltr';
+  document.documentElement.lang = lang;
+  document.body.className = lang!=='en' ? lang : '';
+  document.getElementById('langLabel').textContent = LANG_LABELS[lang]||lang.toUpperCase();
+  // update static i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  // re-build all dynamic pages
+  Object.keys(built).forEach(k => delete built[k]);
+  const cur = document.querySelector('.page.active')?.id?.replace('page-','') || 'home';
+  if (builders[cur]) { builders[cur](); built[cur]=true; }
+  // re-build home (it is always pre-built)
+  if (cur!=='home') { buildHome(); built['home']=true; }
+  document.getElementById('pageTitle').textContent = t(TITLE_KEYS[cur]||cur);
+  toast('✓ ' + (lang==='fa'?'زبان تغییر کرد':lang==='ar'?'تم تغيير اللغة':'Language changed'));
+}
+
+function cycleLang() {
+  const idx = (LANGS.indexOf(currentLang)+1) % LANGS.length;
+  applyLang(LANGS[idx]);
+}
+
+// ─── DATA ──────────────────────────────────────────────────────────────────
+const MOVIES = [
+  {t:'Inception',e:'🎬',y:2010},{t:'Interstellar',e:'🚀',y:2014},{t:'The Matrix',e:'💊',y:1999},
+  {t:'Avengers: Endgame',e:'⚡',y:2019},{t:'Dune',e:'🏜️',y:2021},{t:'Oppenheimer',e:'☢️',y:2023},
+  {t:'Barbie',e:'💗',y:2023},{t:'The Batman',e:'🦇',y:2022},{t:'Top Gun: Maverick',e:'✈️',y:2022},
+  {t:'John Wick 4',e:'🔫',y:2023},{t:'Guardians Vol.3',e:'🦝',y:2023},{t:'Spider-Man',e:'🕷️',y:2021},
+  {t:'Thor: Love',e:'⚡',y:2022},{t:'Black Panther 2',e:'🐾',y:2022},{t:'Doctor Strange 2',e:'✨',y:2022},
+  {t:'Avatar 2',e:'💙',y:2022},{t:'Lightyear',e:'🚀',y:2022},{t:'Nope',e:'👽',y:2022},
+];
+const SERIES = [
+  {t:'Breaking Bad',e:'⚗️',y:2008},{t:'Game of Thrones',e:'🐉',y:2011},{t:'Stranger Things',e:'👾',y:2016},
+  {t:'The Crown',e:'👑',y:2016},{t:'Wednesday',e:'🖤',y:2022},{t:'Squid Game',e:'🦑',y:2021},
+  {t:'Andor',e:'🌌',y:2022},{t:'The Last of Us',e:'🍄',y:2023},{t:'Succession',e:'👔',y:2018},
+  {t:'House of Dragon',e:'🔥',y:2022},{t:'White Lotus',e:'🌺',y:2021},{t:'Severance',e:'🔪',y:2022},
+];
+const ALBUMS = [
+  {t:'The Dark Side of the Moon',a:'Pink Floyd',e:'🌑'},{t:'Kind of Blue',a:'Miles Davis',e:'🎷'},
+  {t:'Thriller',a:'Michael Jackson',e:'🎤'},{t:'Abbey Road',a:'The Beatles',e:'🎸'},
+  {t:'Random Access Memories',a:'Daft Punk',e:'🤖'},{t:'Discovery',a:'Daft Punk',e:'💿'},
+  {t:'Rumours',a:'Fleetwood Mac',e:'🌊'},{t:'Led Zeppelin IV',a:'Led Zeppelin',e:'⚡'},
+];
+const CHANNELS = [
+  {n:'Channel 1',num:1,tag:'News',now:'Evening News',e:'📰',prog:60},
+  {n:'Sports 24',num:2,tag:'Sports',now:'Man City vs Arsenal',e:'⚽',prog:45},
+  {n:'Cinema HD',num:3,tag:'Movies',now:'The Godfather',e:'🎬',prog:30},
+  {n:'Discovery',num:4,tag:'Docs',now:'Planet Earth III',e:'🌍',prog:75},
+  {n:'Kids TV',num:5,tag:'Kids',now:'Peppa Pig',e:'🐷',prog:20},
+  {n:'Music Box',num:6,tag:'Music',now:'Top 40 Hits',e:'🎵',prog:55},
+  {n:'CNN',num:7,tag:'News',now:'Breaking News',e:'🗞️',prog:40},
+  {n:'ESPN',num:8,tag:'Sports',now:'NBA Highlights',e:'🏀',prog:65},
+  {n:'HBO',num:9,tag:'Movies',now:'Succession',e:'👔',prog:35},
+  {n:'National Geo',num:10,tag:'Docs',now:'Wild Alaska',e:'🦅',prog:50},
+  {n:'Cartoon Net.',num:11,tag:'Kids',now:'Adventure Time',e:'🗡️',prog:25},
+  {n:'MTV',num:12,tag:'Music',now:'Music Videos',e:'🎤',prog:70},
+];
+const GAMES = [
+  {t:'LAN Trivia',d:'Compete with everyone on the network in real-time trivia rounds.',p:'2–20 players',e:'🧠',ok:true},
+  {t:'Network Pong',d:'Classic Pong over LAN. Challenge anyone on the same Wi-Fi.',p:'2 players',e:'🏓',ok:true},
+  {t:'Chess',d:'Play chess against another user on the local network.',p:'2 players',e:'♟️',ok:true},
+  {t:'Word Chain',d:'A fast-paced word chain game. Last letter starts the next word.',p:'3–10 players',e:'📝',ok:true},
+  {t:'Draw & Guess',d:'Draw on a shared canvas while others try to guess.',p:'3–12 players',e:'🎨',ok:false},
+  {t:'Quick Quiz',d:'Host a quiz with custom questions for your group.',p:'2–15 players',e:'❓',ok:false},
+];
+const ROOMS = [
+  {n:'Movie Night 🍿',host:'Alice',state:'playing',members:8,media:'Inception'},
+  {n:'Saturday Chill',host:'Bob',state:'paused',members:4,media:'Dune'},
+  {n:'Study Break',host:'Carol',state:'waiting',members:2,media:null},
+];
+
+// dark gradient pairs for posters
+const GRADS = [
+  ['#0d1b3e','#1a0d3e'],['#0d2b3e','#1e1e35'],['#1e0f35','#0f1a2e'],
+  ['#1a3a2a','#1a3a1a'],['#3a1a20','#3a2a10'],['#2a2a2a','#1a1a1a'],
+  ['#1a1f5f','#0d2040'],['#2a1a3a','#1a2a3a'],
+];
+function grad(i){const g=GRADS[i%GRADS.length];return `linear-gradient(135deg,${g[0]},${g[1]})`;}
+
+// ─── RENDER HELPERS ────────────────────────────────────────────────────────
+function mediaCard(item, i, opts = {}) {
+  const prog = opts.prog || 0;
+  const div = document.createElement('div');
+  div.className = 'media-card';
+  div.style.cssText = opts.width ? `width:${opts.width}px;` : '';
+  div.innerHTML = `
+    <div class="poster" style="background:${grad(i)}">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px">${item.e}</div>
+      <div class="media-overlay" style="opacity:0;transition:opacity .3s;position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9),transparent 55%)">
+        <div style="position:absolute;bottom:10px;left:10px">
+          <button style="width:36px;height:36px;border-radius:50%;background:#fff;border:none;cursor:pointer;font-size:15px">▶</button>
+        </div>
+        <button onclick="event.stopPropagation();toast('🔖 Added to Watchlist')" style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.55);border:none;cursor:pointer;color:#fff;font-size:14px">+</button>
+      </div>
+      ${prog ? `<div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>` : ''}
+    </div>
+    <p style="margin-top:8px;font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.t}</p>
+    <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px">${item.y || ''}</p>`;
+  div.onclick = () => playMedia(item.t, item.e);
+  return div;
+}
+
+function channelCard(ch, i, active) {
+  const div = document.createElement('div');
+  div.className = 'channel-card' + (active ? ' active' : '');
+  div.style.padding = '14px';
+  div.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${ch.e}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:10px;color:rgba(255,255,255,.3)">${ch.num}</span>
+          <span class="badge badge-ghost" style="font-size:9px;padding:1px 5px">${ch.tag}</span>
+          ${active ? '<span style="font-size:8px;font-weight:700;color:#ef4444">● LIVE</span>' : ''}
+        </div>
+        <p style="font-size:13px;font-weight:600">${ch.n}</p>
+        <p style="font-size:11px;color:rgba(255,255,255,.4);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ch.now}</p>
+      </div>
+      <button onclick="event.stopPropagation();this.textContent=this.textContent==='♡'?'❤️':'♡';this.style.color=this.textContent==='❤️'?'#ef4444':'rgba(255,255,255,.2)'" style="border:none;background:transparent;color:rgba(255,255,255,.2);cursor:pointer;font-size:14px;flex-shrink:0">♡</button>
+    </div>
+    <div class="epg-bar"><div class="epg-fill" style="width:${ch.prog}%"></div></div>`;
+  div.onclick = () => playChannel(ch.n, ch.now, ch.e, div);
+  return div;
+}
+
+// ─── PAGE BUILDERS ─────────────────────────────────────────────────────────
+function buildHome() {
+  // Hero text
+  const hero = document.querySelector('#page-home .hero-greeting');
+  const heroTitle = document.querySelector('#page-home .hero-title');
+  if (hero) hero.textContent = t('good_evening');
+  if (heroTitle) heroTitle.textContent = t('welcome_back');
+  const heroLive = document.querySelector('#page-home .hero-btn-live');
+  const heroMov  = document.querySelector('#page-home .hero-btn-movies');
+  if (heroLive) heroLive.childNodes[heroLive.childNodes.length-1].textContent = t('watch_live');
+  if (heroMov)  heroMov.childNodes[heroMov.childNodes.length-1].textContent = t('browse_movies');
+  // Section headers
+  const cwTitle = document.querySelector('#page-home .cw-title');
+  if (cwTitle) cwTitle.textContent = t('continue_watching');
+  const cwSeeAll = document.querySelector('#page-home .cw-seeall');
+  if (cwSeeAll) cwSeeAll.textContent = t('see_all');
+  const liveNowLabel = document.querySelector('#page-home .livenow-label');
+  if (liveNowLabel) liveNowLabel.textContent = t('live_now');
+  const allCh = document.querySelector('#page-home .all-channels-btn');
+  if (allCh) allCh.textContent = t('all_channels');
+  const trendTitle = document.querySelector('#page-home .trend-title');
+  if (trendTitle) trendTitle.textContent = t('trending');
+  const trendSeeAll = document.querySelector('#page-home .trend-seeall');
+  if (trendSeeAll) trendSeeAll.textContent = t('see_all');
+
+  // Continue watching
+  const cr = document.getElementById('continueRow');
+  cr.innerHTML = '';
+  [{t:'Inception',e:'🎬',y:2010,p:65},{t:'Interstellar',e:'🚀',y:2014,p:30},{t:'The Matrix',e:'💊',y:1999,p:80},{t:'Avengers',e:'⚡',y:2019,p:45},{t:'Dune',e:'🏜️',y:2021,p:20}]
+    .forEach((m,i) => { const c = mediaCard(m,i,{prog:m.p,width:140}); cr.appendChild(c); });
+
+  // Live now
+  const lg = document.getElementById('liveNowGrid');
+  lg.innerHTML = '';
+  CHANNELS.slice(0,6).forEach((ch,i) => lg.appendChild(channelCard(ch,i,i===0)));
+
+  // Trending
+  const tr = document.getElementById('trendingRow');
+  tr.innerHTML = '';
+  MOVIES.slice(0,8).forEach((m,i) => { const c = mediaCard(m,i+10,{width:140}); tr.appendChild(c); });
+}
+
+function buildLive() {
+  // Update header
+  const hdr = document.querySelector('#page-live h2');
+  if (hdr) hdr.textContent = t('live_tv');
+  const srch = document.querySelector('#page-live input');
+  if (srch) srch.placeholder = t('search_channels');
+  // Category pills
+  const pills = document.getElementById('catPills');
+  pills.innerHTML = '';
+  [[t('cat_all'),'cat_all'],[t('cat_sports'),'cat_sports'],[t('cat_news'),'cat_news'],
+   [t('cat_ent'),'cat_ent'],[t('cat_movies'),'cat_movies'],[t('cat_kids'),'cat_kids'],
+   [t('cat_docs'),'cat_docs'],[t('cat_music'),'cat_music']].forEach(([cat],i) => {
+    const btn = document.createElement('button');
+    btn.textContent = cat;
+    btn.style.cssText = `flex-shrink:0;padding:7px 16px;border-radius:99px;font-size:12px;font-weight:500;border:1px solid;cursor:pointer;transition:all .2s;${i===0?'background:rgba(59,130,246,.15);color:#3b82f6;border-color:rgba(59,130,246,.3)':'background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.07)'}`;
+    btn.onclick = () => {
+      pills.querySelectorAll('button').forEach(b => { b.style.background='rgba(255,255,255,.04)';b.style.color='rgba(255,255,255,.5)';b.style.borderColor='rgba(255,255,255,.07)'; });
+      btn.style.background='rgba(59,130,246,.15)';btn.style.color='#3b82f6';btn.style.borderColor='rgba(59,130,246,.3)';
+    };
+    pills.appendChild(btn);
+  });
+  // Channels
+  const cg = document.getElementById('channelGrid');
+  cg.innerHTML = '';
+  CHANNELS.forEach((ch,i) => cg.appendChild(channelCard(ch,i,i===0)));
+}
+
+function buildMovies() {
+  const hdr = document.querySelector('#page-movies h2');
+  if (hdr) hdr.textContent = t('library');
+  const cnt = document.getElementById('libCount');
+  if (cnt) cnt.textContent = '342 ' + t('items');
+  const srch = document.querySelector('#page-movies input');
+  if (srch) srch.placeholder = t('search_library');
+  const tabs = document.getElementById('libTabs');
+  const grid = document.getElementById('libGrid');
+  const tabKeys = [t('tab_movies'),t('tab_series'),t('tab_music'),t('tab_videos')];
+  const datasets = {};
+  datasets[t('tab_movies')]=MOVIES; datasets[t('tab_series')]=SERIES;
+  datasets[t('tab_music')]=ALBUMS.map(a=>({...a,t:a.t,y:2020}));
+  datasets[t('tab_videos')]=MOVIES.slice(0,6);
+  let active = t('tab_movies');
+  tabs.innerHTML = '';
+  tabKeys.forEach((key,i) => {
+    const emojis = ['🎬','📺','🎵','🎥'];
+    const btn = document.createElement('button');
+    btn.innerHTML = `${emojis[i]} ${key}`;
+    btn.style.cssText = `display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:12px;font-size:13px;font-weight:500;border:1px solid;cursor:pointer;transition:all .2s;${i===0?'background:rgba(59,130,246,.12);color:#3b82f6;border-color:rgba(59,130,246,.25)':'background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.06)'}`;
+    btn.onclick = () => {
+      active = key;
+      tabs.querySelectorAll('button').forEach(b=>{b.style.background='rgba(255,255,255,.04)';b.style.color='rgba(255,255,255,.5)';b.style.borderColor='rgba(255,255,255,.06)';});
+      btn.style.background='rgba(59,130,246,.12)';btn.style.color='#3b82f6';btn.style.borderColor='rgba(59,130,246,.25)';
+      renderLib(datasets[key]);
+    };
+    tabs.appendChild(btn);
+  });
+  function renderLib(data) {
+    grid.innerHTML = '';
+    data.forEach((m,i) => grid.appendChild(mediaCard(m,i)));
+  }
+  renderLib(datasets[t('tab_movies')]);
+}
+
+function buildSeries() {
+  const g = document.getElementById('seriesGrid');
+  g.innerHTML = '';
+  SERIES.forEach((m,i) => g.appendChild(mediaCard(m,i)));
+}
+
+function buildMusic() {
+  const g = document.getElementById('musicGrid');
+  g.innerHTML = '';
+  ALBUMS.forEach((al,i) => {
+    const div = document.createElement('div');
+    div.className = 'media-card';
+    div.innerHTML = `
+      <div style="aspect-ratio:1;border-radius:16px;background:${grad(i+4)};display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;overflow:hidden">
+        ${al.e}
+        <div style="opacity:0;transition:opacity .3s;position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent)" class="media-overlay">
+          <div style="position:absolute;bottom:10px;left:10px"><button style="width:36px;height:36px;border-radius:50%;background:#fff;border:none;cursor:pointer;font-size:15px">▶</button></div>
+        </div>
+      </div>
+      <p style="margin-top:8px;font-size:13px;font-weight:600">${al.t}</p>
+      <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px">${al.a}</p>`;
+    div.onclick = () => playMusic(al.t, al.a, al.e);
+    g.appendChild(div);
+  });
+}
+
+function buildGames() {
+  const titleEl = document.querySelector('#page-games h2');
+  if (titleEl) titleEl.textContent = t('games_title');
+  const subEl = document.querySelector('#page-games p');
+  if (subEl) subEl.textContent = t('games_sub');
+  const g = document.getElementById('gamesGrid');
+  g.innerHTML = '';
+  const colors = ['linear-gradient(135deg,#1e3a5f,#1e1f5f)','linear-gradient(135deg,#1a3a2a,#1a3a1a)','linear-gradient(135deg,#2a2a2a,#1a1a1a)','linear-gradient(135deg,#3a2a10,#3a1a20)','linear-gradient(135deg,#3a1a2a,#2a1a3a)','linear-gradient(135deg,#2a1a3a,#1a2a3a)'];
+  GAMES.forEach((gm,i) => {
+    const div = document.createElement('div');
+    div.className = 'glass';
+    div.style.cssText = `border-radius:20px;overflow:hidden;${gm.ok?'cursor:pointer':'opacity:.55'};transition:transform .25s`;
+    if (gm.ok) { div.onmouseover = ()=>{div.style.transform='translateY(-3px)'}; div.onmouseout = ()=>{div.style.transform=''}; div.onclick=()=>toast('🎮 Launching: '+gm.t); }
+    div.innerHTML = `
+      <div style="height:96px;background:${colors[i]};display:flex;align-items:center;justify-content:center;font-size:52px">${gm.e}</div>
+      <div style="padding:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <p style="font-weight:600;font-size:14px">${gm.t}</p>
+          ${!gm.ok?`<span class="badge badge-ghost" style="font-size:9px">${t('coming_soon')}</span>`:''}
+        </div>
+        <p style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.5;margin-bottom:10px">${gm.d}</p>
+        <p style="font-size:11px;color:rgba(255,255,255,.3)">👥 ${gm.p}</p>
+      </div>`;
+    g.appendChild(div);
+  });
+}
+
+function buildParty() {
+  // header
+  const titleEl = document.querySelector('#page-party h2');
+  if (titleEl) titleEl.textContent = t('watch_party');
+  const actEl = document.querySelector('#page-party .badge-blue');
+  if (actEl) actEl.textContent = '3 ' + t('active_rooms');
+  const createBtn = document.querySelector('#page-party .btn-primary[onclick*="openCreateRoom"]');
+  if (createBtn) createBtn.textContent = t('create_room');
+
+  const stateMap = {playing:t('st_playing'),paused:t('st_paused'),waiting:t('st_waiting')};
+  const g = document.getElementById('roomsGrid');
+  g.innerHTML = '';
+  ROOMS.forEach(r => {
+    const stateColor = r.state==='playing'?'badge-green':r.state==='paused'?'badge-amber':'badge-ghost';
+    const stateLabel = stateMap[r.state] || r.state;
+    const div = document.createElement('div');
+    div.className = 'glass';
+    div.style.cssText = 'border-radius:20px;padding:20px;border:1px solid rgba(255,255,255,.06);transition:border-color .25s';
+    div.onmouseover=()=>{div.style.borderColor='rgba(255,255,255,.14)'};div.onmouseout=()=>{div.style.borderColor='rgba(255,255,255,.06)'};
+    div.innerHTML = `
+      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <p style="font-weight:600;font-size:15px;margin-bottom:5px">${r.n}</p>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge ${stateColor}">${stateLabel}</span>
+            <span style="font-size:11px;color:rgba(255,255,255,.3)">👥 ${r.members}</span>
+          </div>
+        </div>
+        ${r.state==='playing'?'<span class="live-dot" style="width:8px;height:8px;border-radius:50%;background:#10b981;display:block;margin-top:4px"></span>':''}
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:4px">${t('by_host')} ${r.host}</p>
+      ${r.media?`<p style="font-size:11px;color:rgba(59,130,246,.7);margin-bottom:14px">▶ ${r.media}</p>`:'<div style="margin-bottom:14px"></div>'}
+      <button class="btn-primary" style="width:100%;justify-content:center;font-size:12px;padding:8px" onclick="toast('✅ Joined: ${r.n}')">${t('join_room')}</button>`;
+    g.appendChild(div);
+  });
+}
+
+function buildNetwork() {
+  const titleEl = document.querySelector('#page-network h2');
+  if (titleEl) titleEl.textContent = t('net_status');
+  const refBtn = document.querySelector('#page-network .btn-ghost');
+  if (refBtn) refBtn.textContent = t('refresh');
+
+  document.getElementById('netStatus').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:18px">
+      ${[['💻',t('svc_app'),t('uptime'),'rgba(16,185,129,.15)','rgba(16,185,129,.3)'],
+         ['📡',t('svc_tvh'),t('streams'),'rgba(59,130,246,.12)','rgba(59,130,246,.25)'],
+         ['📂',t('svc_lib'),t('files'),'rgba(139,92,246,.12)','rgba(139,92,246,.25)']
+        ].map(([ic,ti,de,bg,br])=>`
+      <div style="background:${bg};border:1px solid ${br};border-radius:20px;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span style="font-size:22px">${ic}</span>
+          <span style="font-size:11px;font-weight:700;color:#10b981;background:rgba(16,185,129,.15);padding:3px 9px;border-radius:99px">✓ online</span>
+        </div>
+        <p style="font-weight:600;margin-bottom:4px">${ti}</p>
+        <p style="font-size:12px;color:rgba(255,255,255,.5)">${de}</p>
+      </div>`).join('')}
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
+      ${[['👥','Users','24'],['🎬','Media Files','342'],['📺','Streams','3'],['⏱️','Uptime','4h']].map(([e,l,v])=>`
+      <div class="glass" style="border-radius:16px;padding:16px;text-align:center">
+        <div style="font-size:22px;margin-bottom:8px">${e}</div>
+        <p style="font-size:24px;font-weight:700;background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${v}</p>
+        <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:3px">${l}</p>
+      </div>`).join('')}
+    </div>
+    <div class="glass" style="border-radius:20px;padding:20px">
+      <p style="font-weight:600;margin-bottom:16px">${t('endpoints')}</p>
+      <div style="font-size:12px">
+        ${[['WiFi-Media UI','http://192.168.1.1/'],['API','http://192.168.1.1/api'],
+           ['WebSocket','ws://192.168.1.1/socket.io'],['TVHeadend','http://192.168.1.1:9981'],
+           ['HLS Stream','http://192.168.1.1/stream/channel/&lt;uuid&gt;']].map(([l,u])=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="color:rgba(255,255,255,.4);width:130px;flex-shrink:0;font-size:11px">${l}</span>
+          <span style="color:#06b6d4;font-family:monospace;direction:ltr">${u}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function buildAdmin() {
+  document.getElementById('adminContent').innerHTML = `
+    <div style="display:flex;gap:4px;padding:4px;background:#141420;border-radius:14px;width:fit-content;margin-bottom:22px" id="adminTabs"></div>
+    <div id="adminPane"></div>`;
+
+  const tabs = [['Overview','📊'],['Users','👥'],['Media','📂']];
+  const tabsEl = document.getElementById('adminTabs');
+  const pane = document.getElementById('adminPane');
+  let cur = 0;
+
+  function renderTab(idx) {
+    cur = idx;
+    tabsEl.querySelectorAll('button').forEach((b,j)=>{b.style.background=j===idx?'rgba(59,130,246,.2)':'transparent';b.style.color=j===idx?'#3b82f6':'rgba(255,255,255,.4)';});
+    if (idx===0) pane.innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
+        ${[['👥','Users','24','#3b82f6'],['🎬','Media','342','#8b5cf6'],['👁️','Rooms','3','#06b6d4'],['💬','Messages','1,247','#f59e0b']].map(([e,l,v,c])=>`
+        <div class="glass" style="border-radius:16px;padding:18px">
+          <div style="font-size:22px;margin-bottom:10px">${e}</div>
+          <p style="font-size:28px;font-weight:700;color:${c}">${v}</p>
+          <p style="font-size:12px;color:rgba(255,255,255,.4);margin-top:3px">${l}</p>
+        </div>`).join('')}
+      </div>
+      <div class="glass" style="border-radius:20px;padding:20px">
+        <p style="font-weight:600;margin-bottom:14px">Media Breakdown</p>
+        ${[['Movies','45%','#3b82f6'],['Series','30%','#8b5cf6'],['Music','15%','#06b6d4'],['Videos','10%','#10b981']].map(([l,p,c])=>`
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <span style="font-size:13px;color:rgba(255,255,255,.6);width:75px">${l}</span>
+          <div style="flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden"><div style="width:${p};height:100%;background:${c};border-radius:99px"></div></div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5);width:36px;text-align:right">${p}</span>
+        </div>`).join('')}
+      </div>`;
+    else if (idx===1) {
+      const users=[{n:'Administrator',u:'admin',r:'admin',s:'Just now'},{n:'Alice Wong',u:'alice',r:'viewer',s:'2h ago'},{n:'Bob Smith',u:'bob',r:'viewer',s:'Yesterday'},{n:'Guest User',u:'guest',r:'viewer',s:'3d ago'}];
+      pane.innerHTML = `<div class="glass" style="border-radius:20px;overflow:hidden"><table style="width:100%;border-collapse:collapse">
+        <thead><tr style="border-bottom:1px solid rgba(255,255,255,.06)">${['User','Role','Last Seen','Actions'].map(h=>`<th style="text-align:left;padding:12px 18px;font-size:11px;color:rgba(255,255,255,.4);font-weight:500">${h}</th>`).join('')}</tr></thead>
+        <tbody>${users.map(u=>`<tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+          <td style="padding:12px 18px"><div style="display:flex;align-items:center;gap:10px"><div style="width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">${u.n[0]}</div><div><p style="font-size:13px;font-weight:500">${u.n}</p><p style="font-size:11px;color:rgba(255,255,255,.35)">@${u.u}</p></div></div></td>
+          <td style="padding:12px 18px"><span class="badge ${u.r==='admin'?'badge-blue':'badge-ghost'}">${u.r}</span></td>
+          <td style="padding:12px 18px;font-size:12px;color:rgba(255,255,255,.4)">${u.s}</td>
+          <td style="padding:12px 18px"><div style="display:flex;gap:6px"><button onclick="toast('Role updated')" style="width:28px;height:28px;border-radius:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#f59e0b;cursor:pointer;font-size:12px">👑</button><button onclick="toast('User deleted')" style="width:28px;height:28px;border-radius:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:12px">🗑</button></div></td>
+        </tr>`).join('')}</tbody></table></div>`;
+    } else {
+      pane.innerHTML = `<div style="display:grid;gap:14px">
+        <div class="glass" style="border-radius:20px;padding:22px">
+          <p style="font-weight:600;margin-bottom:6px">Media Library Scanner</p>
+          <p style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:14px">Scan the /media folder for new files.</p>
+          <button class="btn-primary" id="scanBtn" onclick="simulateScan()">⟳ Scan Now</button>
+          <div id="scanResult" style="margin-top:12px"></div>
+        </div>
+        <div class="glass" style="border-radius:20px;padding:22px">
+          <p style="font-weight:600;margin-bottom:6px">Media Path</p>
+          <p style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:10px">Mount your media to this container path:</p>
+          <code style="display:block;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);color:#06b6d4;font-size:13px">/media</code>
+          <p style="font-size:11px;color:rgba(255,255,255,.3);margin-top:8px">Supported: MP4, MKV, AVI, MOV, TS, WebM, MP3, FLAC, AAC, OGG</p>
+        </div>
+      </div>`;
+    }
+  }
+
+  tabs.forEach(([label, icon], i) => {
+    const btn = document.createElement('button');
+    btn.innerHTML = `${icon} ${label}`;
+    btn.style.cssText = `padding:8px 18px;border-radius:10px;font-size:13px;font-weight:500;border:none;cursor:pointer;transition:all .2s;${i===0?'background:rgba(59,130,246,.2);color:#3b82f6':'background:transparent;color:rgba(255,255,255,.4)'}`;
+    btn.onclick = () => renderTab(i);
+    tabsEl.appendChild(btn);
+  });
+  renderTab(0);
+}
+
+function buildSettings() {
+  const titleEl = document.querySelector('#page-settings h2');
+  if (titleEl) titleEl.textContent = t('settings_title');
+  const langCards = `
+    <div class="glass" style="border-radius:18px;padding:18px">
+      <p style="font-size:13px;font-weight:600;margin-bottom:14px">🌐 ${t('lang_label')}</p>
+      <label style="font-size:11px;color:rgba(255,255,255,.5);display:block;margin-bottom:10px">${t('disp_lang')}</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        ${[['en','🇬🇧 English'],['fa','🇮🇷 فارسی'],['ar','🇸🇦 العربية']].map(([code,label])=>`
+        <button onclick="applyLang('${code}')" style="padding:9px 18px;border-radius:12px;font-size:13px;font-weight:600;border:1px solid;cursor:pointer;transition:all .2s;${currentLang===code?'background:rgba(59,130,246,.15);color:#3b82f6;border-color:rgba(59,130,246,.3)':'background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.07)'}" id="langopt-${code}">${label}</button>`).join('')}
+      </div>
+    </div>`;
+  document.getElementById('settingsContent').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="glass" style="border-radius:18px;padding:18px">
+        <p style="font-size:13px;font-weight:600;margin-bottom:14px">👤 ${t('disp_name').includes('Name')?'Profile':'پروفایل'}</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div><label style="font-size:11px;color:rgba(255,255,255,.5);display:block;margin-bottom:5px">${t('disp_name')}</label><input class="input" value="Administrator"/></div>
+          <div><label style="font-size:11px;color:rgba(255,255,255,.5);display:block;margin-bottom:5px">${t('uname')}</label><input class="input" value="admin" style="opacity:.5" readonly/></div>
+        </div>
+      </div>
+      <div class="glass" style="border-radius:18px;padding:18px">
+        <p style="font-size:13px;font-weight:600;margin-bottom:14px">🎨 ${t('theme')}</p>
+        <div style="display:flex;gap:8px">${['Dark','Darker','Midnight'].map((th,i)=>`<button style="padding:7px 16px;border-radius:10px;font-size:12px;font-weight:500;border:1px solid;cursor:pointer;${i===0?'background:rgba(59,130,246,.12);color:#3b82f6;border-color:rgba(59,130,246,.25)':'background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.07)'}">${th}</button>`).join('')}</div>
+      </div>
+      ${langCards}
+      <div class="glass" style="border-radius:18px;padding:18px">
+        <p style="font-size:13px;font-weight:600;margin-bottom:14px">📶 ${t('net_section')}</p>
+        <div style="font-size:12px">${[['API Endpoint','/api'],['WebSocket','Connected ●'],['PWA Mode','Offline-ready']].map(([l,v])=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span style="color:rgba(255,255,255,.5)">${l}</span><span style="color:#06b6d4;font-family:monospace;direction:ltr">${v}</span></div>`).join('')}</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn-primary" id="saveBtn" onclick="const s=t('saved_btn');this.textContent=s;setTimeout(()=>this.textContent=t('save_btn'),2000);toast('✓ '+t('save_btn'))">${t('save_btn')}</button>
+      </div>
+    </div>`;
+}
+
+function buildProfile() {
+  document.getElementById('profileContent').innerHTML = `
+    <div class="glass" style="border-radius:24px;padding:28px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;flex-shrink:0">A</div>
+        <div style="flex:1">
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:4px">Administrator</h2>
+          <p style="color:rgba(255,255,255,.5);font-size:14px">@admin</p>
+          <span class="badge badge-blue" style="margin-top:8px;display:inline-flex">admin</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost" style="font-size:13px" onclick="nav('settings')">Settings</button>
+          <button style="padding:9px 18px;border-radius:12px;font-size:13px;font-weight:600;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);cursor:pointer" onclick="nav('login')">↩ Sign Out</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06)">
+        ${[['⏱️','12','Watched'],['🔖','5','Watchlist'],['❤️','3','Favorites']].map(([e,v,l])=>`
+        <div style="text-align:center"><div style="font-size:18px;margin-bottom:5px">${e}</div><p style="font-size:24px;font-weight:700">${v}</p><p style="font-size:12px;color:rgba(255,255,255,.4);margin-top:2px">${l}</p></div>`).join('')}
+      </div>
+    </div>
+    <div style="margin-bottom:22px">
+      <p style="font-size:15px;font-weight:600;margin-bottom:14px">⏱️ Continue Watching</p>
+      <div class="h-row scrollbar-hide" id="profileRow"></div>
+    </div>`;
+
+  const pr = document.getElementById('profileRow');
+  [{t:'Inception',e:'🎬',y:2010,p:65},{t:'Interstellar',e:'🚀',y:2014,p:30},{t:'The Matrix',e:'💊',y:1999,p:80}]
+    .forEach((m,i) => { const c = mediaCard(m,i,{prog:m.p,width:140}); pr.appendChild(c); });
+}
+
+// ─── PLAYER ────────────────────────────────────────────────────────────────
+let playing=false, muted=false, prog=28, ticker=null;
+
+function openPlayer(title,sub,emoji,isLive) {
+  document.getElementById('playerTitle').textContent = title;
+  document.getElementById('playerSub').textContent = sub;
+  document.getElementById('playerThumb').textContent = emoji;
+  document.getElementById('totTime').textContent = isLive ? 'Live' : '1:42:00';
+  document.getElementById('playerBar').classList.add('show');
+  playing = true;
+  document.getElementById('playBtn').textContent = '⏸';
+  if (ticker) clearInterval(ticker);
+  ticker = setInterval(() => {
+    if (!playing) return;
+    prog = Math.min(100, prog + (isLive ? 0.02 : 0.04));
+    document.getElementById('progFill').style.width = prog + '%';
+    if (!isLive) {
+      const s = Math.floor((prog/100)*6120);
+      const m=Math.floor(s/60), sec=s%60;
+      document.getElementById('curTime').textContent = m+':'+String(sec).padStart(2,'0');
+    }
+  }, 600);
+}
+function closePlayer() { document.getElementById('playerBar').classList.remove('show'); playing=false; if(ticker)clearInterval(ticker); }
+function togglePlay() { playing=!playing; document.getElementById('playBtn').textContent=playing?'⏸':'▶'; }
+function toggleMute() { muted=!muted; document.getElementById('muteBtn').textContent=muted?'🔇':'🔊'; }
+function skip(s) { prog=Math.max(0,Math.min(100,prog+(s>0?2:-2))); document.getElementById('progFill').style.width=prog+'%'; }
+function seekClick(e,bar) { prog=(e.offsetX/bar.offsetWidth)*100; document.getElementById('progFill').style.width=prog+'%'; }
+function playMedia(t,e) { prog=Math.random()*40; openPlayer(t,'Movie  ·  1h 42m',e,false); toast('▶ '+t); }
+function playChannel(n,now,e,card) {
+  document.querySelectorAll('.channel-card').forEach(c=>c.classList.remove('active'));
+  card.classList.add('active');
+  prog=20+Math.random()*50; openPlayer(n,'🔴 LIVE  ·  '+now,e,true); toast('📺 '+n);
+}
+function playMusic(t,a,e) { prog=Math.random()*60; openPlayer(t,a+' · Music',e,false); toast('🎵 '+t); }
+
+function buildSetup() {
+  function codeBlock(code, id) {
+    return `<div class="code-block" id="cb${id}"><button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('cb${id}').innerText.replace(/^Copy$/m,'').trim());this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)">Copy</button>${code}</div>`;
+  }
+  function section(icon, title, steps) {
+    return `<div class="glass" style="border-radius:22px;padding:24px;margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <span style="font-size:26px">${icon}</span>
+        <h3 style="font-size:17px;font-weight:700">${title}</h3>
+      </div>
+      ${steps}
+    </div>`;
+  }
+  function step(num, title, body) {
+    return `<div style="display:flex;gap:14px;margin-bottom:20px">
+      <div class="step-badge">${num}</div>
+      <div style="flex:1">
+        <p style="font-weight:600;font-size:14px;margin-bottom:8px">${title}</p>
+        ${body}
+      </div>
+    </div>`;
+  }
+  const isFA = currentLang==='fa', isAR = currentLang==='ar';
+
+  const linuxTitle  = isFA?'نصب روی لینوکس (Ubuntu/Debian)':isAR?'التثبيت على Linux (Ubuntu/Debian)':'Linux Setup (Ubuntu / Debian)';
+  const mikrotikTitle = isFA?'پیکربندی روی MikroTik RouterOS':isAR?'الإعداد على MikroTik RouterOS':'MikroTik RouterOS Setup';
+  const reqTitle    = isFA?'پیش‌نیازها':isAR?'المتطلبات':'Requirements';
+  const dockerTitle = isFA?'نصب Docker':isAR?'تثبيت Docker':'Install Docker';
+  const hostapdTitle= isFA?'ایجاد نقطه دسترسی WiFi (hostapd)':isAR?'إنشاء نقطة WiFi (hostapd)':'Create WiFi Access Point (hostapd)';
+  const dnsTitle    = isFA?'تنظیم DHCP و DNS (dnsmasq)':isAR?'إعداد DHCP و DNS (dnsmasq)':'Configure DHCP + DNS (dnsmasq)';
+  const iptTitle    = isFA?'تنظیم مسیریابی و کپتیو پورتال (iptables)':isAR?'إعداد التوجيه والبوابة المحاصرة':'Routing & Captive Portal (iptables)';
+  const deployTitle = isFA?'راه‌اندازی سرویس WiFi-Media':isAR?'تشغيل خدمة WiFi-Media':'Deploy WiFi-Media Service';
+  const systemdTitle= isFA?'سرویس systemd (اجرای خودکار)':isAR?'خدمة systemd (تشغيل تلقائي)':'Systemd Service (auto-start)';
+  const mkhsTitle   = isFA?'راه‌اندازی Hotspot':isAR?'إعداد Hotspot':'Setup Hotspot';
+  const mkdnsTitle  = isFA?'ریدایرکت DNS':isAR?'إعادة توجيه DNS':'DNS Redirect';
+  const mkwgTitle   = isFA?'Walled Garden (بدون احراز هویت برای منابع محلی)':isAR?'Walled Garden (وصول مجاني للموارد المحلية)':'Walled Garden (bypass auth for local resources)';
+  const mkfwTitle   = isFA?'قوانین فایروال':isAR?'قواعد الجدار الناري':'Firewall Rules';
+  const tipTitle    = isFA?'💡 نکات مهم':isAR?'💡 نصائح مهمة':'💡 Important Tips';
+
+  document.getElementById('setupContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9C11.17 3.76 5.84 1.74 3.8 3.8c-2.04 2.04-.02 7.37 4.5 11.9s9.87 6.56 11.9 4.5z"/><path d="M15.7 15.7c4.52-4.52 6.54-9.85 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5C3.78 12.92 1.76 18.25 3.8 20.3c2.05 2.04 7.38.02 11.9-4.6z"/></svg>
+      <h2 style="font-size:20px;font-weight:700">${t('setup_title')}</h2>
+    </div>
+
+    ${section('🐧', linuxTitle,
+      step(1, reqTitle, `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+          ${[
+            ['💻','OS','Ubuntu 22.04+ / Debian 12'],
+            ['🧠','RAM','حداقل 4 GB / Min 4 GB'],
+            ['💾','Storage','20 GB آزاد / 20 GB free'],
+            ['📡','WiFi','کارت شبکه با AP mode / AP-capable adapter'],
+            ['🐳','Docker','Docker CE + Compose v2'],
+            ['🔌','Ports','80, 443, 4000, 8181, 9981'],
+          ].map(([e,k,v])=>`<div class="glass" style="border-radius:12px;padding:12px"><span style="font-size:16px">${e}</span><p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px">${k}</p><p style="font-size:12px;font-weight:500;margin-top:2px">${v}</p></div>`).join('')}
+        </div>`) +
+      step(2, dockerTitle, codeBlock(
+`# Ubuntu/Debian
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+newgrp docker
+docker --version`, 'docker')) +
+      step(3, hostapdTitle, `
+        <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:8px">${isFA?'فایل /etc/hostapd/hostapd.conf را ایجاد کنید:':isAR?'أنشئ ملف /etc/hostapd/hostapd.conf:':'Create /etc/hostapd/hostapd.conf:'}</p>
+        ${codeBlock(
+`interface=wlan0
+driver=nl80211
+ssid=WiFi-Media
+hw_mode=g
+channel=6
+ieee80211n=1
+wmm_enabled=1
+macaddr_acl=0
+auth_algs=1
+wpa=2
+wpa_passphrase=wifimedia2024
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP CCMP
+rsn_pairwise=CCMP`, 'hostapd')}
+        <p style="font-size:12px;color:rgba(255,255,255,.45);margin-top:8px">${isFA?'فعال‌سازی:':isAR?'تفعيل الخدمة:':'Enable service:'}</p>
+        ${codeBlock(
+`sudo systemctl unmask hostapd
+sudo systemctl enable --now hostapd`, 'hostapd2')}`) +
+      step(4, dnsTitle, `
+        <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:8px">${isFA?'فایل /etc/dnsmasq.conf را ویرایش کنید:':isAR?'عدّل ملف /etc/dnsmasq.conf:':'Edit /etc/dnsmasq.conf:'}</p>
+        ${codeBlock(
+`interface=wlan0
+bind-interfaces
+# DHCP range برای کلاینت‌ها
+dhcp-range=192.168.100.10,192.168.100.200,24h
+# آدرس gateway
+dhcp-option=3,192.168.100.1
+dhcp-option=6,192.168.100.1
+# همه دامنه‌ها به سرور محلی redirect شوند
+address=/#/192.168.100.1
+no-resolv
+server=8.8.8.8`, 'dnsmasq')}`) +
+      step(5, iptTitle, codeBlock(
+`# فعال‌سازی IP forwarding
+echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+
+# وارد کردن IP روی کارت وایرلس
+sudo ip addr add 192.168.100.1/24 dev wlan0
+
+# NAT — همه ترافیک port 80 به سرور محلی
+sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp \\
+  --dport 80 -j DNAT --to-destination 192.168.100.1:80
+sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp \\
+  --dport 443 -j DNAT --to-destination 192.168.100.1:443
+
+# Allow forward
+sudo iptables -A FORWARD -i wlan0 -j ACCEPT
+sudo iptables -A FORWARD -o wlan0 -m state \\
+  --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+# ذخیره قوانین
+sudo iptables-save | sudo tee /etc/iptables/rules.v4`, 'ipt')) +
+      step(6, deployTitle, codeBlock(
+`# کلون پروژه
+git clone https://github.com/yourname/wifi-media /opt/wifi-media
+cd /opt/wifi-media
+
+# تنظیم محیط
+cp .env.example .env
+nano .env
+# مقدار LOCAL_IP=192.168.100.1 را تنظیم کنید
+
+# اجرا
+docker compose up -d
+
+# بررسی وضعیت
+docker compose ps`, 'deploy')) +
+      step(7, systemdTitle, `
+        <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:8px">${isFA?'فایل /etc/systemd/system/wifi-media.service را ایجاد کنید:':isAR?'أنشئ ملف /etc/systemd/system/wifi-media.service:':'Create /etc/systemd/system/wifi-media.service:'}</p>
+        ${codeBlock(
+`[Unit]
+Description=WiFi-Media Entertainment Platform
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/wifi-media
+ExecStart=/usr/bin/docker compose up -d
+ExecStop=/usr/bin/docker compose down
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target`, 'systemd')}
+        ${codeBlock(
+`sudo systemctl daemon-reload
+sudo systemctl enable --now wifi-media`, 'systemd2')}`)
+    )}
+
+    ${section('🔴', mikrotikTitle,
+      step(1, reqTitle, `
+        <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px">
+          ${[['RouterOS','7.x+'],['RAM','256 MB+'],['WiFi','802.11n/ac'],['Model','hAP / RB4011 / CCR']].map(([k,v])=>`<span class="glass" style="border-radius:8px;padding:6px 12px"><span style="color:rgba(255,255,255,.5)">${k}: </span><span style="font-weight:600">${v}</span></span>`).join('')}
+        </div>`) +
+      step(2, mkhsTitle, `
+        <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:8px">${isFA?'در Winbox یا terminal اجرا کنید:':isAR?'نفّذ في Winbox أو terminal:':'Run in Winbox Terminal:'}</p>
+        ${codeBlock(
+`/ip hotspot setup
+  hotspot interface: wlan1
+  local address of network: 192.168.100.1/24
+  masquerade network: yes
+  address pool: 192.168.100.10-192.168.100.200
+  select certificate: none
+  ip address of smtp server: 0.0.0.0
+  dns servers: 192.168.100.1
+  dns name: wifi.local
+  name of local hotspot user: admin
+  password for the user: admin`, 'mk1')}`) +
+      step(3, mkdnsTitle, codeBlock(
+`# DNS سرویس را فعال کنید
+/ip dns set allow-remote-requests=yes
+
+# همه دامنه‌ها به آدرس سرور ریدایرکت شوند (Captive Portal)
+/ip dns static
+  add name="*" address=192.168.100.1 ttl=1m`, 'mk2')) +
+      step(4, mkwgTitle, codeBlock(
+`# دسترسی مستقیم به سرور WiFi-Media بدون نیاز به login
+/ip hotspot walled-garden
+  add dst-host=192.168.100.1
+  add dst-host=*.wifi.local
+
+/ip hotspot walled-garden ip
+  add dst-address=192.168.100.1/32 action=accept
+  add dst-address=192.168.100.0/24 action=accept`, 'mk3')) +
+      step(5, mkfwTitle, codeBlock(
+`# اجازه ترافیک LAN داخلی
+/ip firewall filter
+  add chain=forward src-address=192.168.100.0/24 \\
+      dst-address=192.168.100.0/24 \\
+      action=accept comment="WiFi-Media LAN"
+
+# Port forwarding به سرور (اگر سرور IP جداگانه دارد)
+/ip firewall nat
+  add chain=dstnat protocol=tcp dst-port=80 \\
+      in-interface=wlan1 \\
+      action=dst-nat to-addresses=192.168.100.2 \\
+      to-ports=80 comment="WiFi-Media HTTP"
+  add chain=dstnat protocol=tcp dst-port=9981 \\
+      in-interface=wlan1 \\
+      action=dst-nat to-addresses=192.168.100.2 \\
+      to-ports=9981 comment="TVHeadend"`, 'mk4')) +
+      step(6, '🌐 WiFi SSID & Security', codeBlock(
+`/interface wireless
+  set [ find default-name=wlan1 ] \\
+      ssid="WiFi-Media" \\
+      mode=ap-bridge \\
+      band=2ghz-b/g/n \\
+      channel-width=20/40mhz-XX \\
+      security-profile=wifi-media-sec
+
+/interface wireless security-profiles
+  add name=wifi-media-sec \\
+      mode=dynamic-keys \\
+      authentication-types=wpa2-psk \\
+      wpa2-pre-shared-key=wifimedia2024`, 'mk5'))
+    )}
+
+    <div class="glass" style="border-radius:20px;padding:22px;border:1px solid rgba(245,158,11,.2);background:rgba(245,158,11,.06)">
+      <p style="font-size:14px;font-weight:700;color:#fbbf24;margin-bottom:14px">${tipTitle}</p>
+      <ul style="font-size:13px;color:rgba(255,255,255,.65);line-height:2;list-style:none;padding:0">
+        ${[
+          isFA?'🔒 رمز WiFi را پس از نصب تغییر دهید':'🔒 Change WiFi password after setup',
+          isFA?'📱 آدرس دسترسی: http://192.168.100.1 یا http://wifi.local':'📱 Access: http://192.168.100.1 or http://wifi.local',
+          isFA?'🎬 پوشه /media را با فیلم‌هایتان پر کنید':'🎬 Mount your media folder to /media in docker-compose.yml',
+          isFA?'🔄 TVHeadend روی پورت 9981 در دسترس است':'🔄 TVHeadend available at http://192.168.100.1:9981',
+          isFA?'💾 دیتابیس SQLite در پوشه /data ذخیره می‌شود':'💾 SQLite DB persists in ./data volume',
+          isFA?'👥 ادمین پیش‌فرض: admin / admin':'👥 Default admin: admin / admin — change immediately!',
+        ].map(tip=>`<li style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">${tip}</li>`).join('')}
+      </ul>
+    </div>`;
+}
+
+// ─── NAVIGATION ────────────────────────────────────────────────────────────
+const TITLE_KEYS = {home:'home',live:'live_tv',movies:'library',series:'series',music:'music',games:'games_title',party:'watch_party',network:'net_status',admin:'admin_title',settings:'settings_title',profile:'profile',setup:'setup_guide',login:''};
+const TITLES = {};  // dynamically resolved via t() in nav()
+const builders = {home:buildHome,live:buildLive,movies:buildMovies,series:buildSeries,music:buildMusic,games:buildGames,party:buildParty,network:buildNetwork,admin:buildAdmin,settings:buildSettings,profile:buildProfile,setup:buildSetup};
+const built = {};
+
+function nav(id) {
+  // pages
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display=''; });
+  const page = document.getElementById('page-'+id);
+  if (!page) return;
+  if (id==='login') {
+    page.style.display='flex';
+    document.querySelector('.sidebar').style.visibility='hidden';
+    document.querySelector('.topbar').style.display='none';
+    document.querySelector('.main-content').style.display='none';
+  } else {
+    document.querySelector('.sidebar').style.visibility='visible';
+    document.querySelector('.topbar').style.display='flex';
+    document.querySelector('.main-content').style.display='block';
+    page.classList.add('active');
+  }
+  // nav links
+  document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+  const link = document.querySelector(`.nav-link[data-page="${id}"]`);
+  if (link) link.classList.add('active');
+  // title (use i18n)
+  const titleKey = TITLE_KEYS[id];
+  document.getElementById('pageTitle').textContent = titleKey ? t(titleKey) : '';
+  // lazy build page content
+  if (!built[id] && builders[id]) { builders[id](); built[id]=true; }
+  // apply search placeholder
+  const topSearch = document.querySelector('.topbar input');
+  if (topSearch) topSearch.placeholder = t('search');
+  window.scrollTo(0,0);
+}
+
+// nav link clicks
+document.querySelectorAll('[data-page]').forEach(el => {
+  el.addEventListener('click', e => { e.preventDefault(); nav(el.dataset.page); });
+});
+
+// ─── MISC ──────────────────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function doLogin() {
+  document.querySelector('.sidebar').style.visibility='visible';
+  document.querySelector('.topbar').style.display='flex';
+  document.querySelector('.main-content').style.display='block';
+  document.getElementById('page-login').style.display='none';
+  // apply saved language on login
+  applyLang(currentLang);
+  nav('home');
+  toast(currentLang==='fa'?'✓ وارد شدید':currentLang==='ar'?'✓ تم تسجيل الدخول':'✓ Logged in');
+}
+
+function openCreateRoom() {
+  document.getElementById('modalInner').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <h3 style="font-weight:600">Create Watch Room</h3>
+      <button onclick="closeModal()" style="border:none;background:transparent;color:rgba(255,255,255,.4);cursor:pointer;font-size:18px">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div><label style="font-size:11px;color:rgba(255,255,255,.5);display:block;margin-bottom:5px">Room Name</label>
+        <input class="input" placeholder="Movie Night 🍿" id="roomName" autofocus/>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center" onclick="const n=document.getElementById('roomName').value||'New Room';closeModal();toast('✅ Room created: '+n)">Create Room</button>
+    </div>`;
+  document.getElementById('modalBg').classList.add('open');
+}
+function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
+
+function simulateScan() {
+  const btn=document.getElementById('scanBtn');
+  btn.textContent='⟳ Scanning…';btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='⟳ Scan Now';btn.disabled=false;
+    document.getElementById('scanResult').innerHTML='<div style="padding:10px 14px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#10b981;font-size:13px">✓ Scan complete: 12 new files found (354 total)</div>';
+    toast('✓ Media scan complete');
+  }, 2000);
+}
+
+// ─── PARTICLES ─────────────────────────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('particles'), ctx=cv.getContext('2d');
+  let raf, pts=[];
+  function resize(){cv.width=innerWidth;cv.height=innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<55;i++) pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.3+.4,a:Math.random()*.28+.07});
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for(const p of pts){
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(59,130,246,${p.a})`;ctx.fill();
+    }
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<95){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(59,130,246,${(1-d/95)*.08})`;ctx.lineWidth=.5;ctx.stroke();}
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+// Apply saved language / RTL before first render
+(function initLang() {
+  const lang = localStorage.getItem('wm_lang') || 'en';
+  currentLang = lang;
+  const isRTL = lang==='fa'||lang==='ar';
+  document.documentElement.dir = isRTL?'rtl':'ltr';
+  document.documentElement.lang = lang;
+  document.body.className = lang!=='en' ? lang : '';
+  document.getElementById('langLabel').textContent = LANG_LABELS[lang]||lang.toUpperCase();
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  const topSearch = document.querySelector('.topbar input');
+  if (topSearch) topSearch.placeholder = t('search');
+})();
+buildHome();
+built['home'] = true;
+</script>
+</body>
+</html>
