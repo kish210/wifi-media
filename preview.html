@@ -89,6 +89,17 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
 .copy-btn{position:absolute;top:8px;right:8px;padding:3px 10px;border-radius:7px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25);color:#3b82f6;font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s}
 .copy-btn:hover{background:rgba(59,130,246,.3)}
 .step-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);font-size:12px;font-weight:700;flex-shrink:0}
+/* ── Leaflet dark map ──────────────────────────────────────────────────── */
+.leaflet-tile{filter:invert(100%) hue-rotate(180deg) brightness(.72) saturate(1.6) contrast(1.1)}
+.leaflet-container{background:#0a0a14!important;font-family:'Inter',sans-serif}
+.leaflet-control-zoom a{background:#1a1a2e!important;color:#fff!important;border-color:rgba(255,255,255,.1)!important}
+.leaflet-control-zoom a:hover{background:#252545!important}
+.leaflet-popup-content-wrapper{background:#0f0f1a;color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px}
+.leaflet-popup-tip{background:#0f0f1a}
+.leaflet-popup-content{font-size:13px;margin:10px 14px}
+.leaflet-attribution-flag{display:none!important}
+.leaflet-control-attribution{background:rgba(10,10,20,.7)!important;color:rgba(255,255,255,.35)!important;font-size:9px!important;backdrop-filter:blur(4px)}
+.leaflet-control-attribution a{color:rgba(59,130,246,.7)!important}
 </style>
 </head>
 <body>
@@ -189,6 +200,11 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
       <span data-i18n="ai_assistant">AI Assistant</span>
       <span class="badge" style="margin-left:auto;font-size:9px;padding:1px 6px;background:rgba(139,92,246,.15);color:#a78bfa;border-color:rgba(139,92,246,.3)">AI</span>
+    </a>
+    <a class="nav-link" data-page="map">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span data-i18n="map_nav">Map</span>
+      <span class="badge badge-green" style="margin-left:auto;font-size:9px;padding:1px 6px">OSM</span>
     </a>
     <div style="height:1px;background:rgba(255,255,255,.05);margin:8px 4px"></div>
     <!-- System group label -->
@@ -481,6 +497,8 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
     </div>
   </div>
 
+  <!-- MAP -->
+  <div class="page" id="page-map"><div id="mapContent"></div></div>
   <!-- DOWNLOADS -->
   <div class="page" id="page-downloads"><div id="downloadsContent"></div></div>
   <!-- APP STORE -->
@@ -545,6 +563,13 @@ const STRINGS = {
     quick_access:'Quick access',wifi_first:'📶 Connect to the local Wi-Fi first',
     continue_w:'⏱️ Continue Watching',
     nav_services:'SERVICES',nav_system:'SYSTEM',
+    map_nav:'Map',map_title:'Offline Map',
+    map_offline:'Offline Mode',map_hosted:'Locally hosted',
+    map_storage:'Map Storage',map_detail:'Detail Level',
+    map_cities:'Cities',map_add:'Add',map_tiles:'tiles',
+    map_downloaded:'Downloaded',map_not_dl:'not downloaded',
+    map_search:'Search on map…',map_location:'My Location',
+    map_overview:'Overview',map_city_lv:'City level',map_neighborhood:'Neighborhood',map_street:'Street level',
     downloads:'Downloads',appstore:'App Store',ai_assistant:'AI Assistant',
     broadcast:'Broadcast',storage_nav:'Storage',storage_title:'Storage Manager',
     // downloads page
@@ -610,6 +635,13 @@ const STRINGS = {
     quick_access:'دسترسی سریع',wifi_first:'📶 ابتدا به Wi-Fi محلی متصل شوید',
     continue_w:'⏱️ ادامه تماشا',
     nav_services:'سرویس‌ها',nav_system:'سیستم',
+    map_nav:'نقشه',map_title:'نقشه آفلاین',
+    map_offline:'حالت آفلاین',map_hosted:'میزبانی محلی',
+    map_storage:'فضای نقشه‌ها',map_detail:'سطح جزئیات',
+    map_cities:'شهرها',map_add:'افزودن',map_tiles:'کاشی',
+    map_downloaded:'دانلود شده',map_not_dl:'دانلود نشده',
+    map_search:'جستجو در نقشه…',map_location:'موقعیت من',
+    map_overview:'نمای کلی',map_city_lv:'سطح شهر',map_neighborhood:'محله‌ای',map_street:'خیابانی',
     downloads:'دانلودها',appstore:'فروشگاه',ai_assistant:'دستیار هوش مصنوعی',
     broadcast:'پیام اضطراری',storage_nav:'حافظه',storage_title:'مدیریت حافظه',
     dl_active:'دانلودهای فعال',dl_queue:'صف',dl_history:'تاریخچه',
@@ -668,6 +700,13 @@ const STRINGS = {
     quick_access:'وصول سريع',wifi_first:'📶 اتصل بـ Wi-Fi المحلي أولاً',
     continue_w:'⏱️ مواصلة المشاهدة',
     nav_services:'الخدمات',nav_system:'النظام',
+    map_nav:'الخريطة',map_title:'خريطة مضمّنة',
+    map_offline:'وضع غير متصل',map_hosted:'مستضاف محليًا',
+    map_storage:'مساحة الخرائط',map_detail:'مستوى التفاصيل',
+    map_cities:'المدن',map_add:'إضافة',map_tiles:'بلاطة',
+    map_downloaded:'محمّل',map_not_dl:'غير محمّل',
+    map_search:'بحث في الخريطة…',map_location:'موقعي',
+    map_overview:'نظرة عامة',map_city_lv:'مستوى المدينة',map_neighborhood:'حي سكني',map_street:'مستوى الشارع',
     downloads:'التنزيلات',appstore:'متجر التطبيقات',ai_assistant:'مساعد AI',
     broadcast:'البث الطارئ',storage_nav:'التخزين',storage_title:'إدارة التخزين',
     dl_active:'التنزيلات النشطة',dl_queue:'قائمة الانتظار',dl_history:'السجل',
@@ -2060,10 +2099,208 @@ function buildStorage() {
     </div>`;
 }
 
+// ─── MAP PAGE ──────────────────────────────────────────────────────────────
+function buildMap() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const cities = [
+    {name:isFA?'جزیره کیش':isAR?'جزيرة كيش':'Kish Island',       lat:26.527,lon:53.980,size:'8 MB', zoom:'11–17',tiles:3400, dl:true, col:'#10b981'},
+    {name:isFA?'تهران':isAR?'طهران':'Tehran',                       lat:35.689,lon:51.389,size:'42 MB',zoom:'10–16',tiles:18400,dl:true, col:'#3b82f6'},
+    {name:isFA?'مشهد':isAR?'مشهد':'Mashhad',                       lat:36.260,lon:59.617,size:'28 MB',zoom:'10–16',tiles:12200,dl:true, col:'#8b5cf6'},
+    {name:isFA?'اصفهان':isAR?'أصفهان':'Isfahan',                    lat:32.654,lon:51.666,size:'24 MB',zoom:'10–16',tiles:0,    dl:false,col:'#f59e0b'},
+    {name:isFA?'شیراز':isAR?'شيراز':'Shiraz',                      lat:29.592,lon:52.584,size:'22 MB',zoom:'10–16',tiles:0,    dl:false,col:'#ec4899'},
+    {name:isFA?'بندرعباس':isAR?'بندر عباس':'Bandar Abbas',          lat:27.189,lon:56.276,size:'18 MB',zoom:'10–16',tiles:0,    dl:false,col:'#06b6d4'},
+    {name:isFA?'دبی':isAR?'دبي':'Dubai',                           lat:25.204,lon:55.271,size:'35 MB',zoom:'10–16',tiles:0,    dl:false,col:'#f59e0b'},
+    {name:isFA?'مسقط':isAR?'مسقط':'Muscat',                        lat:23.614,lon:58.593,size:'20 MB',zoom:'10–16',tiles:0,    dl:false,col:'#a78bfa'},
+  ];
+  const downloaded = cities.filter(c=>c.dl);
+  const totalTiles = downloaded.reduce((a,c)=>a+c.tiles,0);
+  const totalMB = 78;
+  document.getElementById('mapContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">${t('map_title')}</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.4);margin-top:2px">OpenStreetMap — ${isFA?'کاملاً آفلاین پس از دانلود کاشی‌ها':isAR?'يعمل بلا إنترنت بعد تنزيل البلاطات':'fully offline after tile download'}</p>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)">
+        <span class="live-dot" style="width:5px;height:5px;border-radius:50%;background:#10b981;display:inline-block"></span>
+        <span style="font-size:11px;font-weight:600;color:#10b981">${t('map_offline')}</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start">
+
+      <!-- MAP CONTAINER -->
+      <div>
+        <div style="border-radius:20px;overflow:hidden;height:430px;border:1px solid rgba(255,255,255,.08);position:relative;background:#0a0a14">
+          <div id="leafletMap" style="width:100%;height:100%"></div>
+          <div style="position:absolute;bottom:12px;left:12px;z-index:999;display:flex;gap:6px;pointer-events:none">
+            <div style="padding:5px 10px;border-radius:8px;background:rgba(10,10,15,.88);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.55)">
+              🗺 OpenStreetMap · ${t('map_hosted')}
+            </div>
+          </div>
+        </div>
+        <!-- Search -->
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div style="position:relative;flex:1">
+            <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:rgba(255,255,255,.3)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="input" style="padding-left:36px" placeholder="${t('map_search')}" onkeydown="if(event.key==='Enter')mapSearch(this.value)"/>
+          </div>
+          <button class="btn-ghost" style="font-size:12px;gap:6px" onclick="mapCenter()">📍 ${t('map_location')}</button>
+        </div>
+        <!-- Quick city jump -->
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          ${downloaded.map(c=>`
+          <button onclick="flyToCity(${c.lat},${c.lon},'${c.name}')" style="padding:5px 12px;border-radius:8px;border:1px solid ${c.col}33;background:${c.col}18;color:${c.col};font-size:11px;cursor:pointer;transition:all .2s" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+            📍 ${c.name}
+          </button>`).join('')}
+        </div>
+      </div>
+
+      <!-- SIDE PANEL -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- Storage bar -->
+        <div class="glass" style="border-radius:16px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <p style="font-size:12px;font-weight:600">💾 ${t('map_storage')}</p>
+            <span style="font-size:11px;color:rgba(255,255,255,.4)">${totalMB} MB / 500 MB</span>
+          </div>
+          <div style="height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-bottom:8px">
+            <div style="height:100%;width:${Math.round(totalMB/500*100)}%;background:linear-gradient(90deg,#10b981,#3b82f6);border-radius:99px"></div>
+          </div>
+          <p style="font-size:10px;color:rgba(255,255,255,.35)">${downloaded.length} ${isFA?'شهر':isAR?'مدن':'cities'} · ${totalTiles.toLocaleString()} ${t('map_tiles')}</p>
+        </div>
+
+        <!-- Zoom / detail level -->
+        <div class="glass" style="border-radius:16px;padding:16px">
+          <p style="font-size:12px;font-weight:600;margin-bottom:10px">🔍 ${t('map_detail')}</p>
+          ${[
+            {id:'overview', label:t('map_overview'),    zoom:'0–12', size:'~3 MB'},
+            {id:'city',     label:t('map_city_lv'),     zoom:'0–14', size:'~25 MB', active:true},
+            {id:'neighborhood',label:t('map_neighborhood'),zoom:'0–16',size:'~80 MB'},
+            {id:'street',   label:t('map_street'),      zoom:'0–18', size:'~400 MB'},
+          ].map(z=>`
+          <div onclick="selectZoom(this)" data-zoom="${z.id}" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:10px;background:${z.active?'rgba(59,130,246,.12)':'rgba(255,255,255,.03)'};border:1px solid ${z.active?'rgba(59,130,246,.3)':'transparent'};cursor:pointer;margin-bottom:5px;transition:all .2s" ${z.active?'data-active="1"':''}>
+            <div>
+              <p style="font-size:12px;font-weight:${z.active?'600':'400'};color:${z.active?'#3b82f6':'rgba(255,255,255,.65)'}">${z.label}</p>
+              <p style="font-size:10px;color:rgba(255,255,255,.35)">Zoom ${z.zoom}</p>
+            </div>
+            <span style="font-size:11px;color:rgba(255,255,255,.4)">${z.size}</span>
+          </div>`).join('')}
+        </div>
+
+        <!-- City list -->
+        <div class="glass" style="border-radius:16px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <p style="font-size:12px;font-weight:600">🏙️ ${t('map_cities')}</p>
+            <button onclick="openAddCity()" style="padding:4px 10px;border-radius:7px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:#3b82f6;font-size:11px;cursor:pointer">+ ${t('map_add')}</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            ${cities.map(c=>`
+            <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:11px;background:rgba(255,255,255,.03);cursor:pointer;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(255,255,255,.03)'" onclick="flyToCity(${c.lat},${c.lon},'${c.name}')">
+              <span style="width:7px;height:7px;border-radius:50%;background:${c.dl?c.col:'rgba(255,255,255,.15)'};flex-shrink:0"></span>
+              <div style="flex:1;min-width:0">
+                <p style="font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.name}</p>
+                <p style="font-size:10px;color:rgba(255,255,255,.3);margin-top:1px">${c.dl?`${c.tiles.toLocaleString()} ${t('map_tiles')} · ${c.size}`:`${c.size} · ${t('map_not_dl')}`}</p>
+              </div>
+              ${c.dl
+                ?`<button onclick="event.stopPropagation();toast('🗑️ ${c.name} ${isFA?'حذف شد':isAR?'تم الحذف':'removed'}')" style="width:22px;height:22px;border-radius:6px;border:none;background:rgba(239,68,68,.08);color:#f87171;cursor:pointer;font-size:11px;flex-shrink:0">✕</button>`
+                :`<button onclick="event.stopPropagation();downloadCity(this,'${c.name}','${c.size}')" style="padding:3px 8px;border-radius:7px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#3b82f6;font-size:10px;cursor:pointer;flex-shrink:0;white-space:nowrap">⬇ ${c.size}</button>`
+              }
+            </div>`).join('')}
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+
+  // Load Leaflet and init map
+  setTimeout(loadLeaflet, 80);
+}
+
+function loadLeaflet() {
+  if (window.L) { _initLeafletCore(); return; }
+  if (!document.getElementById('leafletCSS')) {
+    const lnk = document.createElement('link');
+    lnk.id = 'leafletCSS'; lnk.rel = 'stylesheet';
+    lnk.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(lnk);
+  }
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload = _initLeafletCore;
+  document.head.appendChild(s);
+}
+
+function _initLeafletCore() {
+  const el = document.getElementById('leafletMap');
+  if (!el) return;
+  if (window._wmap) { try{window._wmap.remove();}catch(e){} window._wmap=null; }
+  delete el._leaflet_id;
+  el.innerHTML = '';
+  const map = L.map('leafletMap',{zoomControl:true,attributionControl:true}).setView([26.527,53.980],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+    maxZoom:19, className:'leaflet-tile'
+  }).addTo(map);
+  // Markers for downloaded cities
+  [{lat:26.527,lon:53.980,name:'Kish Island',col:'#10b981'},
+   {lat:35.689,lon:51.389,name:'Tehran',col:'#3b82f6'},
+   {lat:36.260,lon:59.617,name:'Mashhad',col:'#8b5cf6'}
+  ].forEach(c=>{
+    const circle = L.circleMarker([c.lat,c.lon],{
+      radius:8,fillColor:c.col,color:'#fff',weight:2,opacity:1,fillOpacity:.9
+    }).addTo(map);
+    circle.bindPopup(`<b>${c.name}</b><br>✓ ${currentLang==='fa'?'دانلود شده':currentLang==='ar'?'محمّل':'Downloaded'} · Offline`);
+  });
+  window._wmap = map;
+}
+
+function flyToCity(lat,lon,name) {
+  if(window._wmap){window._wmap.flyTo([lat,lon],13,{duration:1.4});toast('📍 '+name);}
+  else {toast('🗺 '+name);}
+}
+function mapCenter() {
+  flyToCity(26.527,53.980,currentLang==='fa'?'جزیره کیش':currentLang==='ar'?'جزيرة كيش':'Kish Island');
+}
+function mapSearch(val) {
+  if(!val)return;
+  toast('🔍 '+(currentLang==='fa'?'جستجو: ':currentLang==='ar'?'بحث: ':'Searching: ')+val);
+}
+function downloadCity(btn,name,size) {
+  const isFA=currentLang==='fa',isAR=currentLang==='ar';
+  btn.textContent='⏳…';btn.disabled=true;btn.style.opacity='.6';
+  setTimeout(()=>{
+    btn.textContent='✓';btn.disabled=false;btn.style.opacity='1';
+    btn.style.background='rgba(16,185,129,.1)';
+    btn.style.borderColor='rgba(16,185,129,.25)';
+    btn.style.color='#10b981';
+    // update dot
+    const row=btn.closest('[onclick]');
+    const dot=row?.querySelector('span[style*="border-radius:50%"]');
+    if(dot)dot.style.background='#10b981';
+    toast(`✓ ${name} ${isFA?'دانلود شد':isAR?'تم التنزيل':'downloaded'} (${size})`);
+  },2200);
+}
+function openAddCity() {
+  const isFA=currentLang==='fa',isAR=currentLang==='ar';
+  toast('🔍 '+(isFA?'جستجو در OpenStreetMap…':isAR?'البحث في OpenStreetMap…':'Search OpenStreetMap…'));
+}
+function selectZoom(el) {
+  document.querySelectorAll('[data-zoom]').forEach(e=>{
+    e.style.background='rgba(255,255,255,.03)';e.style.borderColor='transparent';
+    const p=e.querySelector('p');if(p){p.style.color='rgba(255,255,255,.65)';p.style.fontWeight='400';}
+  });
+  el.style.background='rgba(59,130,246,.12)';el.style.borderColor='rgba(59,130,246,.3)';
+  const p=el.querySelector('p');if(p){p.style.color='#3b82f6';p.style.fontWeight='600';}
+  const size=el.querySelector('span')?.textContent||'';
+  toast('🔍 Zoom '+el.querySelector('p:last-child')?.textContent+' · '+size);
+}
+
 // ─── NAVIGATION ────────────────────────────────────────────────────────────
-const TITLE_KEYS = {home:'home',live:'live_tv',movies:'library',series:'series',music:'music',games:'games_title',party:'watch_party',network:'net_status',admin:'admin_title',settings:'settings_title',profile:'profile',setup:'setup_guide',login:'',downloads:'downloads',appstore:'appstore',ai:'ai_assistant',broadcast:'broadcast',storage:'storage_nav'};
+const TITLE_KEYS = {home:'home',live:'live_tv',movies:'library',series:'series',music:'music',games:'games_title',party:'watch_party',network:'net_status',admin:'admin_title',settings:'settings_title',profile:'profile',setup:'setup_guide',login:'',downloads:'downloads',appstore:'appstore',ai:'ai_assistant',broadcast:'broadcast',storage:'storage_nav',map:'map_title'};
 const TITLES = {};  // dynamically resolved via t() in nav()
-const builders = {home:buildHome,live:buildLive,movies:buildMovies,series:buildSeries,music:buildMusic,games:buildGames,party:buildParty,network:buildNetwork,admin:buildAdmin,settings:buildSettings,profile:buildProfile,setup:buildSetup,downloads:buildDownloads,appstore:buildAppStore,ai:buildAI,broadcast:buildBroadcast,storage:buildStorage};
+const builders = {home:buildHome,live:buildLive,movies:buildMovies,series:buildSeries,music:buildMusic,games:buildGames,party:buildParty,network:buildNetwork,admin:buildAdmin,settings:buildSettings,profile:buildProfile,setup:buildSetup,downloads:buildDownloads,appstore:buildAppStore,ai:buildAI,broadcast:buildBroadcast,storage:buildStorage,map:buildMap};
 const built = {};
 
 function nav(id) {
