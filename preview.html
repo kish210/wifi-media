@@ -173,6 +173,35 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
       <span data-i18n="watch_party">Watch Party</span>
     </a>
     <div style="height:1px;background:rgba(255,255,255,.05);margin:8px 4px"></div>
+    <!-- Services group label -->
+    <p style="font-size:9px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;padding:6px 12px 2px" data-i18n="nav_services">SERVICES</p>
+    <a class="nav-link" data-page="downloads">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span data-i18n="downloads">Downloads</span>
+      <span class="badge badge-blue" style="margin-left:auto;font-size:9px;padding:1px 6px">3</span>
+    </a>
+    <a class="nav-link" data-page="appstore">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+      <span data-i18n="appstore">App Store</span>
+      <span class="badge badge-green" style="margin-left:auto;font-size:9px;padding:1px 6px">NEW</span>
+    </a>
+    <a class="nav-link" data-page="ai">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+      <span data-i18n="ai_assistant">AI Assistant</span>
+      <span class="badge" style="margin-left:auto;font-size:9px;padding:1px 6px;background:rgba(139,92,246,.15);color:#a78bfa;border-color:rgba(139,92,246,.3)">AI</span>
+    </a>
+    <div style="height:1px;background:rgba(255,255,255,.05);margin:8px 4px"></div>
+    <!-- System group label -->
+    <p style="font-size:9px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;padding:6px 12px 2px" data-i18n="nav_system">SYSTEM</p>
+    <a class="nav-link" data-page="broadcast">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span data-i18n="broadcast">Broadcast</span>
+      <span class="badge badge-red" style="margin-left:auto;font-size:9px;padding:1px 6px">!</span>
+    </a>
+    <a class="nav-link" data-page="storage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      <span data-i18n="storage_nav">Storage</span>
+    </a>
     <a class="nav-link" data-page="network">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
       <span data-i18n="network">Network</span>
@@ -452,6 +481,17 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
     </div>
   </div>
 
+  <!-- DOWNLOADS -->
+  <div class="page" id="page-downloads"><div id="downloadsContent"></div></div>
+  <!-- APP STORE -->
+  <div class="page" id="page-appstore"><div id="appstoreContent"></div></div>
+  <!-- AI ASSISTANT -->
+  <div class="page" id="page-ai"><div id="aiContent"></div></div>
+  <!-- BROADCAST -->
+  <div class="page" id="page-broadcast"><div id="broadcastContent"></div></div>
+  <!-- STORAGE -->
+  <div class="page" id="page-storage"><div id="storageContent"></div></div>
+
   <!-- ── FOOTER ─────────────────────────────────────────────── -->
   <footer style="text-align:center;padding:36px 0 16px;border-top:1px solid rgba(255,255,255,.04);margin-top:48px">
     <a href="https://kishwifi.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;opacity:.4;transition:opacity .25s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='.4'">
@@ -504,6 +544,39 @@ const STRINGS = {
     sign_in:'Sign In',register:'Register',username_l:'Username',password_l:'Password',
     quick_access:'Quick access',wifi_first:'📶 Connect to the local Wi-Fi first',
     continue_w:'⏱️ Continue Watching',
+    nav_services:'SERVICES',nav_system:'SYSTEM',
+    downloads:'Downloads',appstore:'App Store',ai_assistant:'AI Assistant',
+    broadcast:'Broadcast',storage_nav:'Storage',storage_title:'Storage Manager',
+    // downloads page
+    dl_active:'Active Downloads',dl_queue:'Queue',dl_history:'History',
+    dl_from:'From kishwifi.com',dl_pause:'Pause',dl_resume:'Resume',dl_cancel:'Cancel',
+    dl_speed:'Speed',dl_eta:'ETA',dl_size:'Size',dl_usb:'Import from USB',
+    dl_browse:'Browse kishwifi.com',dl_packages:'Available Packages',
+    // app store
+    as_title:'Local App Store',as_sub:'Install apps, games & tools — no internet required',
+    as_featured:'Featured',as_apps:'Apps',as_games:'Games',as_tools:'Tools',as_media:'Media',
+    as_install:'Install',as_installed:'Installed',as_update:'Update',as_open:'Open',
+    as_size:'Size',as_ver:'Version',as_upload:'Upload APK',as_usb:'Install from USB',
+    as_search:'Search apps…',
+    // ai assistant
+    ai_title:'AI Assistant',ai_sub:'Local AI — fully offline, no cloud required',
+    ai_status:'Model Status',ai_loaded:'Model Loaded',ai_not_loaded:'No Model',
+    ai_install_model:'Install Model',ai_chat:'Chat',ai_recommend:'Recommend Media',
+    ai_search:'Semantic Search',ai_voice:'Voice Assistant',
+    ai_placeholder:'Ask anything…',ai_send:'Send',ai_thinking:'Thinking…',
+    ai_offline:'Running fully offline via Ollama',
+    ai_caps:'Capabilities',
+    // broadcast
+    bc_title:'Emergency Broadcast',bc_sub:'Push instant alerts to all connected devices',
+    bc_compose:'Compose Alert',bc_active:'Active Alerts',bc_history:'History',
+    bc_send:'Send to All',bc_severity:'Severity',bc_msg:'Message',bc_msg_ph:'Type your announcement…',
+    bc_critical:'🔴 Critical',bc_warning:'🟠 Warning',bc_info:'🔵 Info',
+    bc_transport:'🚌 Transport',bc_devices:'devices',bc_sent:'Sent',
+    // storage
+    st_title:'Storage Manager',st_total:'Total',st_used:'Used',st_free:'Free',
+    st_movies:'Movies',st_series:'Series',st_music:'Music',st_cache:'Cache',
+    st_other:'Other',st_clean:'Clean Cache',st_scan:'Rescan Library',
+    st_index:'Indexed Files',st_db:'Database',
   },
   fa:{
     home:'خانه',live_tv:'پخش زنده',movies:'فیلم‌ها',series:'سریال‌ها',music:'موسیقی',
@@ -536,6 +609,32 @@ const STRINGS = {
     sign_in:'ورود',register:'ثبت‌نام',username_l:'نام کاربری',password_l:'رمز عبور',
     quick_access:'دسترسی سریع',wifi_first:'📶 ابتدا به Wi-Fi محلی متصل شوید',
     continue_w:'⏱️ ادامه تماشا',
+    nav_services:'سرویس‌ها',nav_system:'سیستم',
+    downloads:'دانلودها',appstore:'فروشگاه',ai_assistant:'دستیار هوش مصنوعی',
+    broadcast:'پیام اضطراری',storage_nav:'حافظه',storage_title:'مدیریت حافظه',
+    dl_active:'دانلودهای فعال',dl_queue:'صف',dl_history:'تاریخچه',
+    dl_from:'از kishwifi.com',dl_pause:'توقف',dl_resume:'ادامه',dl_cancel:'لغو',
+    dl_speed:'سرعت',dl_eta:'زمان باقی',dl_size:'حجم',dl_usb:'وارد کردن از USB',
+    dl_browse:'مرور kishwifi.com',dl_packages:'بسته‌های موجود',
+    as_title:'فروشگاه محلی',as_sub:'نصب اپ، بازی و ابزار — بدون اینترنت',
+    as_featured:'ویژه',as_apps:'اپلیکیشن‌ها',as_games:'بازی‌ها',as_tools:'ابزارها',as_media:'رسانه',
+    as_install:'نصب',as_installed:'نصب شده',as_update:'بروزرسانی',as_open:'باز کردن',
+    as_size:'حجم',as_ver:'نسخه',as_upload:'آپلود APK',as_usb:'نصب از USB',as_search:'جستجوی اپ…',
+    ai_title:'دستیار هوش مصنوعی',ai_sub:'هوش مصنوعی محلی — کاملاً آفلاین، بدون نیاز به اینترنت',
+    ai_status:'وضعیت مدل',ai_loaded:'مدل بارگذاری شد',ai_not_loaded:'بدون مدل',
+    ai_install_model:'نصب مدل',ai_chat:'چت',ai_recommend:'پیشنهاد رسانه',
+    ai_search:'جستجوی هوشمند',ai_voice:'دستیار صوتی',
+    ai_placeholder:'هر سوالی بپرسید…',ai_send:'ارسال',ai_thinking:'در حال پردازش…',
+    ai_offline:'اجرا شده آفلاین از طریق Ollama',ai_caps:'قابلیت‌ها',
+    bc_title:'پیام اضطراری',bc_sub:'ارسال فوری هشدار به همه دستگاه‌های متصل',
+    bc_compose:'نوشتن پیام',bc_active:'پیام‌های فعال',bc_history:'تاریخچه',
+    bc_send:'ارسال به همه',bc_severity:'درجه',bc_msg:'پیام',bc_msg_ph:'متن اعلانیه را بنویسید…',
+    bc_critical:'🔴 بحرانی',bc_warning:'🟠 هشدار',bc_info:'🔵 اطلاع‌رسانی',
+    bc_transport:'🚌 حمل‌ونقل',bc_devices:'دستگاه',bc_sent:'ارسال شد',
+    st_title:'مدیریت حافظه',st_total:'کل',st_used:'استفاده شده',st_free:'آزاد',
+    st_movies:'فیلم‌ها',st_series:'سریال‌ها',st_music:'موسیقی',st_cache:'کش',
+    st_other:'سایر',st_clean:'پاکسازی کش',st_scan:'بازبینی کتابخانه',
+    st_index:'فایل‌های ایندکس',st_db:'دیتابیس',
   },
   ar:{
     home:'الرئيسية',live_tv:'البث المباشر',movies:'الأفلام',series:'المسلسلات',music:'الموسيقى',
@@ -568,6 +667,32 @@ const STRINGS = {
     sign_in:'تسجيل الدخول',register:'تسجيل',username_l:'اسم المستخدم',password_l:'كلمة المرور',
     quick_access:'وصول سريع',wifi_first:'📶 اتصل بـ Wi-Fi المحلي أولاً',
     continue_w:'⏱️ مواصلة المشاهدة',
+    nav_services:'الخدمات',nav_system:'النظام',
+    downloads:'التنزيلات',appstore:'متجر التطبيقات',ai_assistant:'مساعد AI',
+    broadcast:'البث الطارئ',storage_nav:'التخزين',storage_title:'إدارة التخزين',
+    dl_active:'التنزيلات النشطة',dl_queue:'قائمة الانتظار',dl_history:'السجل',
+    dl_from:'من kishwifi.com',dl_pause:'إيقاف',dl_resume:'استئناف',dl_cancel:'إلغاء',
+    dl_speed:'السرعة',dl_eta:'الوقت المتبقي',dl_size:'الحجم',dl_usb:'استيراد من USB',
+    dl_browse:'تصفح kishwifi.com',dl_packages:'الحزم المتاحة',
+    as_title:'المتجر المحلي',as_sub:'ثبّت التطبيقات والألعاب والأدوات — بدون إنترنت',
+    as_featured:'مميزة',as_apps:'تطبيقات',as_games:'ألعاب',as_tools:'أدوات',as_media:'وسائط',
+    as_install:'تثبيت',as_installed:'مثبّت',as_update:'تحديث',as_open:'فتح',
+    as_size:'الحجم',as_ver:'الإصدار',as_upload:'رفع APK',as_usb:'تثبيت من USB',as_search:'بحث في التطبيقات…',
+    ai_title:'مساعد الذكاء الاصطناعي',ai_sub:'ذكاء اصطناعي محلي — يعمل بالكامل بدون إنترنت',
+    ai_status:'حالة النموذج',ai_loaded:'النموذج محمّل',ai_not_loaded:'لا يوجد نموذج',
+    ai_install_model:'تثبيت النموذج',ai_chat:'محادثة',ai_recommend:'اقتراح وسائط',
+    ai_search:'بحث دلالي',ai_voice:'المساعد الصوتي',
+    ai_placeholder:'اسأل أي شيء…',ai_send:'إرسال',ai_thinking:'جارٍ التفكير…',
+    ai_offline:'يعمل بالكامل دون اتصال عبر Ollama',ai_caps:'القدرات',
+    bc_title:'البث الطارئ',bc_sub:'إرسال تنبيهات فورية لجميع الأجهزة المتصلة',
+    bc_compose:'إنشاء تنبيه',bc_active:'التنبيهات النشطة',bc_history:'السجل',
+    bc_send:'إرسال للجميع',bc_severity:'الشدة',bc_msg:'الرسالة',bc_msg_ph:'اكتب إعلانك هنا…',
+    bc_critical:'🔴 حرج',bc_warning:'🟠 تحذير',bc_info:'🔵 معلومات',
+    bc_transport:'🚌 مواصلات',bc_devices:'جهاز',bc_sent:'تم الإرسال',
+    st_title:'إدارة التخزين',st_total:'الإجمالي',st_used:'مستخدم',st_free:'متاح',
+    st_movies:'أفلام',st_series:'مسلسلات',st_music:'موسيقى',st_cache:'ذاكرة التخزين',
+    st_other:'أخرى',st_clean:'تنظيف الكاش',st_scan:'إعادة فهرسة',
+    st_index:'ملفات مفهرسة',st_db:'قاعدة البيانات',
   }
 };
 let currentLang = localStorage.getItem('wm_lang') || 'en';
@@ -1355,10 +1480,590 @@ sudo systemctl enable --now wifi-media`, 'systemd2')}`)
     </div>`;
 }
 
+// ─── DOWNLOADS PAGE ────────────────────────────────────────────────────────
+function buildDownloads() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const activeDownloads = [
+    {name:'Llama 3.2 3B (AI Model)',size:'2.1 GB',done:62,speed:'8.4 MB/s',eta:'3m 12s',icon:'🤖',src:'kishwifi.com'},
+    {name:'VLC Media Player APK',size:'24 MB',done:88,speed:'12 MB/s',eta:'22s',icon:'🎬',src:'kishwifi.com'},
+    {name:'Game Pack Vol.3',size:'145 MB',done:15,speed:'6.1 MB/s',eta:'18m',icon:'🎮',src:'kishwifi.com'},
+  ];
+  const packages = [
+    {name:'Jellyfin Mobile',cat:'App',size:'18 MB',icon:'📱',ver:'10.8.1',free:true},
+    {name:'VLC for Android',cat:'App',size:'24 MB',icon:'🎬',ver:'3.6.0',free:true},
+    {name:'Kodi',cat:'App',size:'62 MB',icon:'📺',ver:'21.0',free:true},
+    {name:'Llama 3.2 3B',cat:'AI',size:'2.1 GB',icon:'🤖',ver:'3.2',free:true},
+    {name:'Mistral 7B Q4',cat:'AI',size:'4.8 GB',icon:'🧠',ver:'0.3',free:true},
+    {name:'Subtitle Pack FA',cat:'Media',size:'340 MB',icon:'📝',ver:'2024-01',free:true},
+    {name:'Movie Posters Pack',cat:'Media',size:'1.2 GB',icon:'🖼️',ver:'2024-12',free:true},
+    {name:'Chess Engine (Stockfish)',cat:'Game',size:'8 MB',icon:'♟️',ver:'16.1',free:true},
+  ];
+  const history = [
+    {name:'Ubuntu 22.04 Server ISO',size:'1.4 GB',date:'2 days ago',icon:'🐧',ok:true},
+    {name:'OpenWRT Firmware',size:'8 MB',date:'5 days ago',icon:'📡',ok:true},
+    {name:'Big Buck Bunny 4K',size:'560 MB',date:'1 week ago',icon:'🐰',ok:true},
+  ];
+  document.getElementById('downloadsContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">${t('downloads')}</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.4);margin-top:2px">${isFA?'مدیریت دانلودها و بسته‌های آفلاین':isAR?'إدارة التنزيلات والحزم غير المتصلة':'Manage offline packages & downloads'}</p>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn-ghost" style="font-size:12px;gap:6px" onclick="toast('📂 ${isFA?'درج USB شناسایی شد':isAR?'تم اكتشاف USB':'USB drive detected'}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="14" rx="2"/><path d="M12 16v6"/><path d="M8 22h8"/></svg>
+          ${t('dl_usb')}
+        </button>
+        <button class="btn-primary" style="font-size:12px" onclick="showKishwifi()">
+          <svg width="13" height="13" viewBox="0 0 44 40" fill="none"><path d="M35 30H11a8 8 0 1 1 1.6-15.84A10 10 0 0 1 35 21a6 6 0 0 1 0 9z" fill="none" stroke="white" stroke-width="2"/><path d="M17.5 24.5a6.5 6.5 0 0 1 9 0" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="28" r="2" fill="white"/></svg>
+          ${t('dl_browse')}
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Downloads -->
+    <div class="glass" style="border-radius:20px;padding:22px;margin-bottom:20px">
+      <div class="section-header">
+        <div class="section-title">
+          <span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;animation:liveDot 1.2s infinite"></span>
+          ${t('dl_active')} <span class="badge badge-blue" style="font-size:10px">${activeDownloads.length}</span>
+        </div>
+        <button class="btn-ghost" style="font-size:11px;padding:5px 10px" onclick="toast('${isFA?'همه متوقف شد':isAR?'تم إيقاف الكل':'All paused'}')">⏸ ${isFA?'توقف همه':isAR?'إيقاف الكل':'Pause All'}</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        ${activeDownloads.map((d,i)=>`
+        <div style="padding:14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${d.icon}</div>
+            <div style="flex:1;min-width:0">
+              <p style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.name}</p>
+              <div style="display:flex;gap:10px;margin-top:3px;font-size:11px;color:rgba(255,255,255,.4)">
+                <span>📦 ${d.size}</span>
+                <span>⚡ ${d.speed}</span>
+                <span>⏱ ${d.eta}</span>
+                <span style="color:rgba(59,130,246,.7)">↓ kishwifi.com</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
+              <button onclick="toast('⏸ ${isFA?'متوقف شد':isAR?'تم الإيقاف':'Paused'}')" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer">${t('dl_pause')}</button>
+              <button onclick="toast('✕ ${isFA?'لغو شد':isAR?'تم الإلغاء':'Cancelled'}')" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(239,68,68,.2);background:rgba(239,68,68,.08);color:#f87171;font-size:11px;cursor:pointer">${t('dl_cancel')}</button>
+            </div>
+          </div>
+          <div style="height:4px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden">
+            <div style="height:100%;width:${d.done}%;background:linear-gradient(90deg,#3b82f6,#06b6d4);border-radius:99px;transition:width .5s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:rgba(255,255,255,.3)">
+            <span>${d.done}%</span><span>${Math.round(parseInt(d.size)*d.done/100*10)/10} / ${d.size}</span>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- kishwifi.com Packages -->
+    <div class="glass" style="border-radius:20px;padding:22px;margin-bottom:20px">
+      <div class="section-header" style="margin-bottom:16px">
+        <div class="section-title">
+          <svg width="15" height="14" viewBox="0 0 44 40" fill="none"><path d="M35 30H11a8 8 0 1 1 1.6-15.84A10 10 0 0 1 35 21a6 6 0 0 1 0 9z" fill="#1a3a6e" stroke="#3b7dd8" stroke-width="2"/><path d="M17.5 24.5a6.5 6.5 0 0 1 9 0" stroke="#90bfff" stroke-width="2.2" stroke-linecap="round"/><circle cx="22" cy="28" r="2" fill="#90bfff"/></svg>
+          ${t('dl_packages')} — <span style="color:rgba(255,200,80,.8);font-size:12px">kishwifi.com</span>
+        </div>
+        <span class="badge badge-green" style="font-size:10px">${isFA?'آنلاین':isAR?'متصل':'Online'}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+        ${packages.map(p=>`
+        <div class="glass" style="border-radius:14px;padding:14px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(59,130,246,.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,.06)'">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:26px">${p.icon}</span>
+            <div style="flex:1;min-width:0">
+              <p style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</p>
+              <p style="font-size:10px;color:rgba(255,255,255,.35);margin-top:1px">${p.size} · v${p.ver}</p>
+            </div>
+            <span class="badge badge-ghost" style="font-size:9px">${p.cat}</span>
+          </div>
+          <button onclick="toast('⬇ ${isFA?'در حال دانلود':isAR?'جارٍ التنزيل':'Downloading'}: ${p.name}')" style="width:100%;padding:7px;border-radius:9px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);color:#3b82f6;font-size:12px;font-weight:600;cursor:pointer">⬇ ${isFA?'دانلود':isAR?'تنزيل':'Download'} (${p.size})</button>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="glass" style="border-radius:20px;padding:22px">
+      <p class="section-title" style="margin-bottom:14px">📋 ${t('dl_history')}</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${history.map(h=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:rgba(255,255,255,.02)">
+          <span style="font-size:20px">${h.icon}</span>
+          <div style="flex:1">
+            <p style="font-size:12px;font-weight:500">${h.name}</p>
+            <p style="font-size:10px;color:rgba(255,255,255,.3);margin-top:1px">${h.size} · ${h.date}</p>
+          </div>
+          <span style="color:#10b981;font-size:12px">✓ ${isFA?'کامل':isAR?'مكتمل':'Done'}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function showKishwifi() {
+  toast('🌐 kishwifi.com — ' + (currentLang==='fa'?'بروزرسانی‌ها و بسته‌ها':currentLang==='ar'?'التحديثات والحزم':'Updates & packages'));
+}
+
+// ─── APP STORE PAGE ─────────────────────────────────────────────────────────
+function buildAppStore() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const featured = [
+    {name:'VLC Media Player',desc:isFA?'پخش‌کننده چندرسانه‌ای قدرتمند':isAR?'مشغّل وسائط قوي':'Powerful multimedia player',size:'24 MB',icon:'🎬',ver:'3.6.0',installed:true,cat:'App'},
+    {name:'Kodi',desc:isFA?'مرکز رسانه کامل':isAR?'مركز وسائط كامل':'Complete media center',size:'62 MB',icon:'📺',ver:'21.0',installed:false,cat:'App'},
+    {name:'Termux',desc:isFA?'ترمینال لینوکس برای اندروید':isAR?'محطة Linux لنظام Android':'Linux terminal for Android',size:'18 MB',icon:'⌨️',ver:'0.118',installed:false,cat:'Tool'},
+    {name:'Stockfish Chess',desc:isFA?'بهترین موتور شطرنج دنیا':isAR?'أفضل محرك شطرنج في العالم':'World\'s strongest chess engine',size:'8 MB',icon:'♟️',ver:'16.1',installed:true,cat:'Game'},
+    {name:'Jellyfin Mobile',desc:isFA?'پخش محتوای Jellyfin':isAR?'تشغيل محتوى Jellyfin':'Stream your Jellyfin content',size:'18 MB',icon:'📱',ver:'2.6.1',installed:false,cat:'App'},
+    {name:'QuickPic Gallery',desc:isFA?'گالری تصویر سریع':isAR?'معرض صور سريع':'Fast and lightweight gallery',size:'12 MB',icon:'🖼️',ver:'4.9',installed:false,cat:'App'},
+    {name:'Network Analyzer',desc:isFA?'آنالیز شبکه وای‌فای':isAR?'تحليل شبكة WiFi':'WiFi & network analyzer',size:'6 MB',icon:'📡',ver:'3.2',installed:false,cat:'Tool'},
+    {name:'Pong LAN',desc:isFA?'بازی پینگ پنگ روی شبکه محلی':isAR?'لعبة بينغ بونغ عبر الشبكة المحلية':'Local multiplayer Pong game',size:'4 MB',icon:'🏓',ver:'1.0',installed:true,cat:'Game'},
+  ];
+  const cats = [t('as_featured'),t('as_apps'),t('as_games'),t('as_tools'),t('as_media')];
+  let activeCat = t('as_featured');
+
+  document.getElementById('appstoreContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">${t('as_title')}</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.4);margin-top:2px">${t('as_sub')}</p>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn-ghost" style="font-size:12px" onclick="toast('${isFA?'USB اسکن شد':isAR?'تم فحص USB':'USB scanned'}')">
+          <svg style="width:13px;height:13px;display:inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="14" rx="2"/><path d="M12 16v6"/><path d="M8 22h8"/></svg>
+          ${t('as_usb')}
+        </button>
+        <button class="btn-primary" style="font-size:12px" onclick="toast('📤 ${isFA?'APK آپلود شد':isAR?'تم رفع APK':'APK uploaded'}')">📤 ${t('as_upload')}</button>
+      </div>
+    </div>
+
+    <!-- Search bar -->
+    <div style="position:relative;margin-bottom:20px">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:rgba(255,255,255,.3)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="input" style="padding-left:36px" placeholder="${t('as_search')}"/>
+    </div>
+
+    <!-- Category tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px" class="scrollbar-hide" id="asTabs">
+      ${cats.map((c,i)=>`<button onclick="asTab(this,'${c}')" style="padding:7px 16px;border-radius:99px;border:1px solid ${i===0?'rgba(59,130,246,.5)':'rgba(255,255,255,.1)'};background:${i===0?'rgba(59,130,246,.15)':'transparent'};color:${i===0?'#3b82f6':'rgba(255,255,255,.5)'};font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s">${c}</button>`).join('')}
+    </div>
+
+    <!-- kishwifi source badge -->
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:rgba(30,58,95,.2);border:1px solid rgba(59,130,246,.15);margin-bottom:20px;font-size:12px">
+      <svg width="14" height="13" viewBox="0 0 44 40" fill="none"><path d="M35 30H11a8 8 0 1 1 1.6-15.84A10 10 0 0 1 35 21a6 6 0 0 1 0 9z" fill="#1a3a6e" stroke="#3b7dd8" stroke-width="2"/><path d="M17.5 24.5a6.5 6.5 0 0 1 9 0" stroke="#90bfff" stroke-width="2.2" stroke-linecap="round"/><circle cx="22" cy="28" r="2" fill="#90bfff"/></svg>
+      <span style="color:rgba(255,255,255,.6)">${isFA?'منبع بسته‌ها:':isAR?'مصدر الحزم:':'Package source:'}</span>
+      <span style="color:rgba(255,200,80,.85);font-weight:600">kishwifi.com</span>
+      <span class="badge badge-green" style="font-size:9px;margin-left:auto">${isFA?'متصل':isAR?'متصل':'Connected'}</span>
+    </div>
+
+    <!-- App grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px" id="asGrid">
+      ${featured.map(app=>`
+      <div class="glass" style="border-radius:16px;padding:16px;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">${app.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <p style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${app.name}</p>
+              <span class="badge badge-ghost" style="font-size:8px">${app.cat}</span>
+            </div>
+            <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.4">${app.desc}</p>
+            <p style="font-size:10px;color:rgba(255,255,255,.25);margin-top:4px">v${app.ver} · ${app.size}</p>
+          </div>
+        </div>
+        <button onclick="event.stopPropagation();${app.installed?`toast('📂 ${isFA?'در حال باز شدن':isAR?'جارٍ الفتح':'Opening'}: ${app.name}')`:
+          `toast('⬇ ${isFA?'در حال نصب':isAR?'جارٍ التثبيت':'Installing'}: ${app.name}');this.textContent='⏳ ${isFA?'در حال نصب…':isAR?'جارٍ…':'Installing…'}';setTimeout(()=>{this.textContent='✓ ${isFA?'نصب شد':isAR?'مثبّت':'Installed'}';this.style.background='rgba(16,185,129,.12)';this.style.borderColor='rgba(16,185,129,.3)';this.style.color='#10b981'},2000)`
+        }" style="width:100%;margin-top:12px;padding:8px;border-radius:10px;border:1px solid ${app.installed?'rgba(16,185,129,.3)':'rgba(59,130,246,.3)'};background:${app.installed?'rgba(16,185,129,.1)':'rgba(59,130,246,.1)'};color:${app.installed?'#10b981':'#3b82f6'};font-size:12px;font-weight:600;cursor:pointer;transition:all .3s">
+          ${app.installed?`📂 ${t('as_open')}`:`⬇ ${t('as_install')} · ${app.size}`}
+        </button>
+      </div>`).join('')}
+    </div>`;
+}
+
+function asTab(btn, cat) {
+  document.querySelectorAll('#asTabs button').forEach(b=>{
+    b.style.background='transparent';b.style.color='rgba(255,255,255,.5)';b.style.borderColor='rgba(255,255,255,.1)';
+  });
+  btn.style.background='rgba(59,130,246,.15)';btn.style.color='#3b82f6';btn.style.borderColor='rgba(59,130,246,.5)';
+  toast('📦 '+cat);
+}
+
+// ─── AI ASSISTANT PAGE ──────────────────────────────────────────────────────
+function buildAI() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const caps = [
+    {icon:'💬',en:'Natural language chat',fa:'چت زبان طبیعی',ar:'محادثة اللغة الطبيعية'},
+    {icon:'🎬',en:'Media recommendations',fa:'پیشنهاد فیلم و سریال',ar:'اقتراح الأفلام والمسلسلات'},
+    {icon:'🔍',en:'Semantic search',fa:'جستجوی معنایی',ar:'بحث دلالي'},
+    {icon:'📝',en:'Subtitle summarization',fa:'خلاصه زیرنویس',ar:'تلخيص الترجمة'},
+    {icon:'🎙️',en:'Voice assistant (offline)',fa:'دستیار صوتی (آفلاین)',ar:'مساعد صوتي (بدون إنترنت)'},
+    {icon:'🌐',en:'Multilingual (FA/AR/EN)',fa:'چندزبانه (FA/AR/EN)',ar:'متعدد اللغات'},
+  ];
+  const messages = [
+    {role:'user',text:isFA?'چند فیلم هیجان‌انگیز پیشنهاد بده':isAR?'اقترح لي بعض الأفلام المثيرة':'Suggest some exciting movies'},
+    {role:'ai',text:isFA?'البته! بر اساس تاریخچه تماشای شما، پیشنهاد می‌کنم:\n• Inception (2010) — فیلم علمی‌تخیلی درباره رویاها\n• Interstellar (2014) — سفر فضایی حیرت‌انگیز\n• Dune (2021) — حماسه‌ای در آینده':isAR?'بالطبع! بناءً على سجل مشاهداتك، أقترح:\n• Inception (2010) — خيال علمي عن الأحلام\n• Interstellar (2014) — رحلة فضائية مذهلة\n• Dune (2021) — ملحمة مستقبلية':'Sure! Based on your watch history, I recommend:\n• Inception (2010) — Mind-bending sci-fi thriller\n• Interstellar (2014) — Epic space adventure\n• Dune (2021) — Stunning sci-fi epic'},
+    {role:'user',text:isFA?'فیلم‌هایی مثل Interstellar هستن توی کتابخانه؟':isAR?'هل يوجد أفلام مثل Interstellar في المكتبة؟':'Any films similar to Interstellar in the library?'},
+    {role:'ai',text:isFA?'بله، در کتابخانه محلی شما پیدا شد:\n• The Martian ★ 8.0 — 1h 44m\n• Gravity ★ 7.7 — 1h 31m\n• Contact ★ 7.5 — 2h 33m\nمی‌خواید همین الان پخش کنم؟':isAR?'نعم، وجدت في مكتبتك المحلية:\n• The Martian ★ 8.0\n• Gravity ★ 7.7\n• Contact ★ 7.5\nهل تريد تشغيله الآن؟':'Found in your local library:\n• The Martian ★ 8.0 — 1h 44m\n• Gravity ★ 7.7 — 1h 31m\n• Contact ★ 7.5 — 2h 33m\nWant me to play one now?'},
+  ];
+  document.getElementById('aiContent').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start">
+
+      <!-- Chat panel -->
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+          <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:22px">🤖</div>
+          <div>
+            <h2 style="font-size:18px;font-weight:700">${t('ai_title')}</h2>
+            <p style="font-size:12px;color:rgba(255,255,255,.4)">${t('ai_offline')}</p>
+          </div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)">
+            <span class="live-dot" style="width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block"></span>
+            <span style="font-size:11px;font-weight:600;color:#10b981">${t('ai_loaded')}</span>
+          </div>
+        </div>
+
+        <!-- Model info bar -->
+        <div class="glass" style="border-radius:14px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">🧠</span>
+            <div>
+              <p style="font-size:12px;font-weight:600">Llama 3.2 3B</p>
+              <p style="font-size:10px;color:rgba(255,255,255,.35)">via Ollama · 2.1 GB · Q4_K_M</p>
+            </div>
+          </div>
+          <span class="badge badge-ghost" style="font-size:10px">Local</span>
+          <span class="badge badge-green" style="font-size:10px">Offline</span>
+          <div style="margin-left:auto;display:flex;gap:6px">
+            <button class="btn-ghost" style="font-size:11px;padding:5px 10px" onclick="toast('🔄 ${isFA?'در حال تغییر مدل':isAR?'تغيير النموذج':'Switching model'}')">Change Model</button>
+          </div>
+        </div>
+
+        <!-- Chat messages -->
+        <div style="background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px;height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:14px" id="aiChat" class="scrollbar-hide">
+          ${messages.map(m=>`
+          <div style="display:flex;gap:10px;${m.role==='user'?'flex-direction:row-reverse':''}">
+            <div style="width:28px;height:28px;border-radius:8px;background:${m.role==='user'?'linear-gradient(135deg,#8b5cf6,#3b82f6)':'linear-gradient(135deg,#1e3a5f,#0d2040)'};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${m.role==='user'?'👤':'🤖'}</div>
+            <div style="max-width:80%;padding:10px 14px;border-radius:${m.role==='user'?'14px 4px 14px 14px':'4px 14px 14px 14px'};background:${m.role==='user'?'rgba(139,92,246,.18)':'rgba(255,255,255,.05)'};border:1px solid ${m.role==='user'?'rgba(139,92,246,.25)':'rgba(255,255,255,.07)'};font-size:13px;line-height:1.6;white-space:pre-line">${m.text}</div>
+          </div>`).join('')}
+          <div id="aiTyping" style="display:none;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#1e3a5f,#0d2040);display:flex;align-items:center;justify-content:center;font-size:14px">🤖</div>
+            <div style="padding:10px 14px;border-radius:4px 14px 14px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:13px;color:rgba(255,255,255,.5)">
+              <span style="display:inline-flex;gap:3px">${[0,1,2].map(i=>`<span style="animation:liveDot 1.2s ${i*0.2}s infinite;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4);display:inline-block"></span>`).join('')}</span>
+              ${t('ai_thinking')}
+            </div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div style="display:flex;gap:8px">
+          <input class="input" id="aiInput" placeholder="${t('ai_placeholder')}" style="flex:1" onkeydown="if(event.key==='Enter')sendAI()"/>
+          <button class="btn-primary" onclick="sendAI()" style="flex-shrink:0">${t('ai_send')} ➤</button>
+        </div>
+
+        <!-- Quick prompts -->
+        <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+          ${(isFA?['پیشنهاد فیلم 🎬','موسیقی مناسب 🎵','جستجوی سریال 🔍','بازی پیشنهاد بده 🎮']:
+             isAR?['اقترح فيلمًا 🎬','موسيقى مناسبة 🎵','بحث مسلسل 🔍','اقترح لعبة 🎮']:
+             ['Suggest a movie 🎬','Find music 🎵','Search series 🔍','Recommend a game 🎮']
+          ).map(q=>`<button onclick="document.getElementById('aiInput').value='${q.replace(/[🎬🎵🔍🎮]/g,'').trim()}';sendAI()" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.55);font-size:11px;cursor:pointer;transition:all .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'">${q}</button>`).join('')}
+        </div>
+      </div>
+
+      <!-- Side panel -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <!-- Capabilities -->
+        <div class="glass" style="border-radius:18px;padding:18px">
+          <p style="font-size:13px;font-weight:600;margin-bottom:14px">⚡ ${t('ai_caps')}</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            ${caps.map(c=>`
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,.03)">
+              <span style="font-size:18px">${c.icon}</span>
+              <p style="font-size:12px">${isFA?c.fa:isAR?c.ar:c.en}</p>
+              <span style="margin-left:auto;color:#10b981;font-size:12px">✓</span>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Install model card -->
+        <div class="glass" style="border-radius:18px;padding:18px;border-color:rgba(139,92,246,.2)">
+          <p style="font-size:13px;font-weight:600;margin-bottom:6px">📦 ${isFA?'مدل‌های موجود':isAR?'النماذج المتاحة':'Available Models'}</p>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:14px">${isFA?'از kishwifi.com دانلود کنید':isAR?'حمّل من kishwifi.com':'Download from kishwifi.com'}</p>
+          ${[
+            {name:'Llama 3.2 3B',size:'2.1 GB',active:true},
+            {name:'Mistral 7B Q4',size:'4.8 GB',active:false},
+            {name:'Phi-3 Mini',size:'2.3 GB',active:false},
+          ].map(m=>`
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.03);margin-bottom:6px">
+            <span style="font-size:14px">🧠</span>
+            <div style="flex:1;min-width:0">
+              <p style="font-size:11px;font-weight:600">${m.name}</p>
+              <p style="font-size:10px;color:rgba(255,255,255,.3)">${m.size}</p>
+            </div>
+            ${m.active?`<span class="badge badge-green" style="font-size:9px">${isFA?'فعال':isAR?'نشط':'Active'}</span>`:
+              `<button onclick="toast('⬇ ${isFA?'دانلود شروع شد':isAR?'بدأ التنزيل':'Download started'}: ${m.name}')" style="padding:4px 8px;border-radius:7px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#3b82f6;font-size:10px;cursor:pointer">⬇</button>`}
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function sendAI() {
+  const inp = document.getElementById('aiInput');
+  const chat = document.getElementById('aiChat');
+  const typing = document.getElementById('aiTyping');
+  const text = inp.value.trim();
+  if (!text) return;
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  // add user bubble
+  const userDiv = document.createElement('div');
+  userDiv.style.cssText='display:flex;gap:10px;flex-direction:row-reverse';
+  userDiv.innerHTML=`<div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">👤</div><div style="max-width:80%;padding:10px 14px;border-radius:14px 4px 14px 14px;background:rgba(139,92,246,.18);border:1px solid rgba(139,92,246,.25);font-size:13px;line-height:1.6">${text}</div>`;
+  chat.appendChild(userDiv);
+  inp.value = '';
+  typing.style.display='flex';
+  chat.scrollTop=chat.scrollHeight;
+  setTimeout(()=>{
+    typing.style.display='none';
+    const aiDiv = document.createElement('div');
+    aiDiv.style.cssText='display:flex;gap:10px';
+    const reply = isFA?`متوجه شدم! در کتابخانه محلی جستجو کردم. نتایج پیدا شد. می‌خواید همین الان پخش کنم؟`:isAR?`فهمت! بحثت في مكتبتك المحلية. هل تريد التشغيل الآن؟`:`Got it! I searched your local library and found some great matches. Want to play one now?`;
+    aiDiv.innerHTML=`<div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#1e3a5f,#0d2040);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🤖</div><div style="max-width:80%;padding:10px 14px;border-radius:4px 14px 14px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:13px;line-height:1.6">${reply}</div>`;
+    chat.appendChild(aiDiv);
+    chat.scrollTop=chat.scrollHeight;
+  }, 1800);
+}
+
+// ─── EMERGENCY BROADCAST PAGE ───────────────────────────────────────────────
+function buildBroadcast() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const activeAlerts = [
+    {sev:'info',icon:'🔵',title:isFA?'توقف ۱۵ دقیقه‌ای در ایستگاه بعدی':isAR?'توقف 15 دقيقة في المحطة القادمة':'15-minute stop at next station',time:'2m ago',devices:47},
+    {sev:'warning',icon:'🟠',title:isFA?'سرعت اینترنت کاهش یافت':isAR?'انخفضت سرعة الإنترنت':'Internet speed reduced',time:'18m ago',devices:47},
+  ];
+  const history = [
+    {icon:'🔴',title:isFA?'مانور اضطراری':isAR?'مناورة طارئة':'Emergency drill',time:isFA?'دیروز ۱۰:۳۰':isAR?'أمس 10:30':'Yesterday 10:30',devices:52},
+    {icon:'🔵',title:isFA?'اطلاعیه رستوران':isAR?'إعلان المطعم':'Restaurant announcement',time:isFA?'دیروز ۱۳:۰۰':isAR?'أمس 13:00':'Yesterday 13:00',devices:52},
+    {icon:'🚌',title:isFA?'اطلاعیه تغییر مسیر':isAR?'إشعار تغيير المسار':'Route change notice',time:'2 days ago',devices:44},
+  ];
+  document.getElementById('broadcastContent').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start">
+
+      <!-- Left: Compose + Active -->
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+          <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ef4444,#dc2626);display:flex;align-items:center;justify-content:center;font-size:22px">📣</div>
+          <div>
+            <h2 style="font-size:18px;font-weight:700">${t('bc_title')}</h2>
+            <p style="font-size:12px;color:rgba(255,255,255,.4)">${t('bc_sub')}</p>
+          </div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)">
+            <span class="live-dot" style="width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block"></span>
+            <span style="font-size:11px;font-weight:600;color:#10b981">47 ${t('bc_devices')}</span>
+          </div>
+        </div>
+
+        <!-- Compose card -->
+        <div class="glass" style="border-radius:20px;padding:22px;margin-bottom:20px">
+          <p style="font-size:14px;font-weight:600;margin-bottom:16px">📝 ${t('bc_compose')}</p>
+
+          <!-- Severity selector -->
+          <p style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px">${t('bc_severity')}</p>
+          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="sevBtns">
+            ${[['critical','🔴',t('bc_critical'),'rgba(239,68,68,'],['warning','🟠',t('bc_warning'),'rgba(245,158,11,'],['info','🔵',t('bc_info'),'rgba(59,130,246,'],['transport','🚌',t('bc_transport'),'rgba(16,185,129,']].map(([id,icon,label,col],i)=>`
+            <button onclick="selectSev(this,'${id}')" data-sev="${id}" style="padding:7px 14px;border-radius:10px;border:1px solid ${i===2?col+'0.4)':'rgba(255,255,255,.08)'};background:${i===2?col+'0.12)':'transparent'};color:${i===2?col+'0.9)':'rgba(255,255,255,.5)'};font-size:12px;font-weight:600;cursor:pointer;transition:all .2s">${label}</button>`).join('')}
+          </div>
+
+          <!-- Message textarea -->
+          <p style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px">${t('bc_msg')}</p>
+          <textarea id="bcMsg" placeholder="${t('bc_msg_ph')}" style="width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:13px;outline:none;resize:vertical;min-height:90px;font-family:inherit;transition:border-color .2s" onfocus="this.style.borderColor='rgba(59,130,246,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.08)'"></textarea>
+
+          <!-- Target -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0">
+            <span style="font-size:12px;color:rgba(255,255,255,.4)">${isFA?'ارسال به':isAR?'إرسال إلى':'Send to'}:</span>
+            <div style="display:flex;gap:6px">
+              ${[isFA?'همه دستگاه‌ها':isAR?'جميع الأجهزة':'All Devices (47)',isFA?'فقط موبایل':isAR?'الأجهزة المحمولة':'Mobile Only',isFA?'فقط TV':isAR?'التلفاز':'TV Only'].map((l,i)=>`<button onclick="toast('${isFA?'هدف':isAR?'الهدف':'Target'}: ${l}')" style="padding:5px 10px;border-radius:8px;border:1px solid ${i===0?'rgba(59,130,246,.4)':'rgba(255,255,255,.1)'};background:${i===0?'rgba(59,130,246,.12)':'transparent'};color:${i===0?'#3b82f6':'rgba(255,255,255,.45)'};font-size:11px;cursor:pointer">${l}</button>`).join('')}
+            </div>
+          </div>
+
+          <button onclick="sendBroadcast()" class="btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:14px">
+            📣 ${t('bc_send')} (47 ${t('bc_devices')})
+          </button>
+        </div>
+
+        <!-- Active alerts -->
+        <div class="glass" style="border-radius:20px;padding:22px">
+          <p style="font-size:14px;font-weight:600;margin-bottom:14px">${t('bc_active')} <span class="badge badge-red" style="font-size:10px">${activeAlerts.length}</span></p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            ${activeAlerts.map(a=>`
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)">
+              <span style="font-size:22px">${a.icon}</span>
+              <div style="flex:1">
+                <p style="font-size:13px;font-weight:500">${a.title}</p>
+                <p style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">${a.time} · ${a.devices} ${t('bc_devices')}</p>
+              </div>
+              <button onclick="this.closest('div[style]').remove();toast('${isFA?'پیام حذف شد':isAR?'تم حذف الرسالة':'Alert dismissed'}')" style="width:26px;height:26px;border-radius:7px;border:none;background:rgba(239,68,68,.1);color:#f87171;cursor:pointer;font-size:13px">✕</button>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: History + Stats -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <!-- Stats -->
+        <div class="glass" style="border-radius:18px;padding:18px">
+          <p style="font-size:13px;font-weight:600;margin-bottom:14px">📊 ${isFA?'آمار امروز':isAR?'إحصاءات اليوم':'Today\'s Stats'}</p>
+          ${[
+            {icon:'📣',val:5,label:isFA?'پیام ارسال شده':isAR?'رسائل مرسلة':'Messages sent'},
+            {icon:'📱',val:47,label:isFA?'دستگاه متصل':isAR?'أجهزة متصلة':'Connected devices'},
+            {icon:'👁️',val:'94%',label:isFA?'نرخ مشاهده':isAR?'معدل المشاهدة':'Avg read rate'},
+          ].map(s=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.03);margin-bottom:6px">
+            <span style="font-size:20px">${s.icon}</span>
+            <div>
+              <p style="font-size:18px;font-weight:700">${s.val}</p>
+              <p style="font-size:10px;color:rgba(255,255,255,.35)">${s.label}</p>
+            </div>
+          </div>`).join('')}
+        </div>
+
+        <!-- History -->
+        <div class="glass" style="border-radius:18px;padding:18px">
+          <p style="font-size:13px;font-weight:600;margin-bottom:12px">📋 ${t('bc_history')}</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            ${history.map(h=>`
+            <div style="display:flex;align-items:center;gap:10px;padding:9px;border-radius:10px;background:rgba(255,255,255,.02)">
+              <span style="font-size:16px">${h.icon}</span>
+              <div style="flex:1;min-width:0">
+                <p style="font-size:11px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h.title}</p>
+                <p style="font-size:10px;color:rgba(255,255,255,.3);margin-top:1px">${h.time}</p>
+              </div>
+              <span style="font-size:10px;color:rgba(255,255,255,.3)">${h.devices}✓</span>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function selectSev(btn, sev) {
+  const colors={critical:'rgba(239,68,68,',warning:'rgba(245,158,11,',info:'rgba(59,130,246,',transport:'rgba(16,185,129,'};
+  document.querySelectorAll('#sevBtns button').forEach(b=>{
+    b.style.background='transparent';b.style.color='rgba(255,255,255,.5)';b.style.borderColor='rgba(255,255,255,.08)';
+  });
+  const col=colors[sev]||colors.info;
+  btn.style.background=col+'0.15)';btn.style.color=col+'0.95)';btn.style.borderColor=col+'0.4)';
+}
+function sendBroadcast() {
+  const msg = document.getElementById('bcMsg')?.value?.trim();
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  if (!msg) { toast(isFA?'⚠️ متن پیام را وارد کنید':isAR?'⚠️ أدخل نص الرسالة':'⚠️ Enter a message'); return; }
+  toast('📣 '+(isFA?'پیام به ۴۷ دستگاه ارسال شد':isAR?'تم الإرسال إلى 47 جهاز':'Broadcast sent to 47 devices'));
+  document.getElementById('bcMsg').value='';
+}
+
+// ─── STORAGE PAGE ───────────────────────────────────────────────────────────
+function buildStorage() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const storageData = [
+    {label:t('st_movies'),size:'128 GB',gb:128,color:'#3b82f6',icon:'🎬'},
+    {label:t('st_series'),size:'94 GB',gb:94,color:'#8b5cf6',icon:'📺'},
+    {label:t('st_music'),size:'18 GB',gb:18,color:'#ec4899',icon:'🎵'},
+    {label:'Videos',size:'32 GB',gb:32,color:'#f59e0b',icon:'📹'},
+    {label:t('st_cache'),size:'8 GB',gb:8,color:'#ef4444',icon:'🗑️'},
+    {label:t('st_other'),size:'4 GB',gb:4,color:'rgba(255,255,255,.2)',icon:'📁'},
+  ];
+  const totalGB = 500, usedGB = storageData.reduce((a,b)=>a+b.gb,0);
+  const freeGB = totalGB - usedGB;
+  const usedPct = Math.round(usedGB/totalGB*100);
+  const stats = [
+    {icon:'🎬',label:t('st_movies'),val:'342'},
+    {icon:'📺',label:t('st_series'),val:'1,284 '+isFA?'قسمت':isAR?'حلقة':'episodes'},
+    {icon:'🎵',label:t('st_music'),val:'4,200 '+isFA?'آهنگ':isAR?'أغنية':'tracks'},
+    {icon:'📡',label:isFA?'کانال زنده':isAR?'قنوات مباشرة':'Live channels',val:'24'},
+    {icon:'🗄️',label:t('st_db'),val:'2.4 MB'},
+    {icon:'📦',label:isFA?'بسته‌های کش':isAR?'حزم مخزنة':'Cached packages',val:'12'},
+  ];
+  document.getElementById('storageContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">${t('st_title')}</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.4);margin-top:2px">${isFA?'مدیریت فضای ذخیره‌سازی و کتابخانه رسانه':isAR?'إدارة مساحة التخزين ومكتبة الوسائط':'Manage disk space and media library'}</p>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn-ghost" style="font-size:12px" onclick="toast('🔍 ${isFA?'بازبینی شروع شد':isAR?'بدأ إعادة الفهرسة':'Rescan started'}')">🔍 ${t('st_scan')}</button>
+        <button class="btn-primary" style="font-size:12px;background:rgba(239,68,68,.7)" onclick="toast('🗑️ ${isFA?'کش پاک شد (۸ GB)':isAR?'تم تنظيف الكاش (8 GB)':'Cache cleared (8 GB)}')">🗑️ ${t('st_clean')}</button>
+      </div>
+    </div>
+
+    <!-- Disk overview -->
+    <div class="glass" style="border-radius:20px;padding:24px;margin-bottom:20px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px">
+        ${[
+          {label:t('st_total'),val:'500 GB',color:'rgba(255,255,255,.6)'},
+          {label:t('st_used'),val:`${usedGB} GB`,color:'#3b82f6'},
+          {label:t('st_free'),val:`${freeGB} GB`,color:'#10b981'},
+        ].map(s=>`
+        <div style="text-align:center;padding:16px;border-radius:14px;background:rgba(255,255,255,.03)">
+          <p style="font-size:26px;font-weight:700;color:${s.color}">${s.val}</p>
+          <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px">${s.label}</p>
+        </div>`).join('')}
+      </div>
+
+      <!-- Segmented bar -->
+      <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:8px">${usedPct}% ${t('st_used')}</p>
+      <div style="height:12px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.05);display:flex;margin-bottom:16px">
+        ${storageData.map(s=>`<div style="width:${Math.round(s.gb/totalGB*100)}%;background:${s.color};transition:width .5s"></div>`).join('')}
+      </div>
+
+      <!-- Legend -->
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        ${storageData.map(s=>`
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px">
+          <span style="width:10px;height:10px;border-radius:3px;background:${s.color};display:inline-block;flex-shrink:0"></span>
+          ${s.icon} ${s.label} <span style="color:rgba(255,255,255,.4)">${s.size}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Stats grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:20px">
+      ${stats.map(s=>`
+      <div class="glass" style="border-radius:16px;padding:16px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:24px">${s.icon}</span>
+          <div>
+            <p style="font-size:18px;font-weight:700">${s.val}</p>
+            <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:1px">${s.label}</p>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+
+    <!-- Per-folder breakdown -->
+    <div class="glass" style="border-radius:20px;padding:22px">
+      <p style="font-size:14px;font-weight:600;margin-bottom:16px">📂 ${isFA?'جزئیات فضا':isAR?'تفاصيل التخزين':'Storage Breakdown'}</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${storageData.map(s=>`
+        <div style="display:flex;align-items:center;gap:14px">
+          <span style="font-size:20px;width:28px;text-align:center">${s.icon}</span>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <span style="font-size:12px;font-weight:500">${s.label}</span>
+              <span style="font-size:12px;color:rgba(255,255,255,.45)">${s.size}</span>
+            </div>
+            <div style="height:5px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden">
+              <div style="height:100%;width:${Math.round(s.gb/usedGB*100)}%;background:${s.color};border-radius:99px;transition:width .6s"></div>
+            </div>
+          </div>
+          ${s.label===t('st_cache')?`<button onclick="toast('🗑️ ${isFA?'کش پاک شد':isAR?'تم تنظيف الكاش':'Cache cleared'}')" style="padding:4px 10px;border-radius:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;font-size:10px;cursor:pointer">Clean</button>`:''}
+        </div>`).join('')}
+      </div>
+    </div>`;
+}
+
 // ─── NAVIGATION ────────────────────────────────────────────────────────────
-const TITLE_KEYS = {home:'home',live:'live_tv',movies:'library',series:'series',music:'music',games:'games_title',party:'watch_party',network:'net_status',admin:'admin_title',settings:'settings_title',profile:'profile',setup:'setup_guide',login:''};
+const TITLE_KEYS = {home:'home',live:'live_tv',movies:'library',series:'series',music:'music',games:'games_title',party:'watch_party',network:'net_status',admin:'admin_title',settings:'settings_title',profile:'profile',setup:'setup_guide',login:'',downloads:'downloads',appstore:'appstore',ai:'ai_assistant',broadcast:'broadcast',storage:'storage_nav'};
 const TITLES = {};  // dynamically resolved via t() in nav()
-const builders = {home:buildHome,live:buildLive,movies:buildMovies,series:buildSeries,music:buildMusic,games:buildGames,party:buildParty,network:buildNetwork,admin:buildAdmin,settings:buildSettings,profile:buildProfile,setup:buildSetup};
+const builders = {home:buildHome,live:buildLive,movies:buildMovies,series:buildSeries,music:buildMusic,games:buildGames,party:buildParty,network:buildNetwork,admin:buildAdmin,settings:buildSettings,profile:buildProfile,setup:buildSetup,downloads:buildDownloads,appstore:buildAppStore,ai:buildAI,broadcast:buildBroadcast,storage:buildStorage};
 const built = {};
 
 function nav(id) {
