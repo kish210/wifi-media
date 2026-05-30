@@ -206,6 +206,15 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
       <span data-i18n="map_nav">Map</span>
       <span class="badge badge-green" style="margin-left:auto;font-size:9px;padding:1px 6px">OSM</span>
     </a>
+    <a class="nav-link" data-page="journey">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <span data-i18n="journey_nav">Journey Info</span>
+    </a>
+    <a class="nav-link" data-page="order">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span data-i18n="order_nav">Order</span>
+      <span class="badge badge-amber" id="cartBadge" style="margin-left:auto;font-size:9px;padding:1px 6px;display:none">0</span>
+    </a>
     <div style="height:1px;background:rgba(255,255,255,.05);margin:8px 4px"></div>
     <!-- System group label -->
     <p style="font-size:9px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase;padding:6px 12px 2px" data-i18n="nav_system">SYSTEM</p>
@@ -276,6 +285,9 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
     </div>
     <div style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:10px;background:rgba(255,255,255,.04);font-size:11px;color:rgba(255,255,255,.35)">
       <span class="live-dot" style="width:5px;height:5px;border-radius:50%;background:#10b981;display:inline-block"></span>24 <span data-i18n="online">online</span>
+    </div>
+    <div id="kidsBtn" onclick="toggleKids()" title="Kids Mode" style="display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:700;color:rgba(255,255,255,.4);cursor:pointer;transition:all .3s">
+      👶 <span id="kidsLabel" data-i18n="kids_off">Kids</span>
     </div>
     <div id="langBtn" onclick="cycleLang()" title="Language / زبان / اللغة" style="display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:10px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);font-size:11px;font-weight:700;color:#a78bfa;cursor:pointer;transition:all .2s;letter-spacing:.05em">
       🌐 <span id="langLabel">EN</span>
@@ -499,6 +511,10 @@ body.fa,body.ar{font-family:'Vazirmatn','Noto Sans Arabic','Inter',sans-serif}
 
   <!-- MAP -->
   <div class="page" id="page-map"><div id="mapContent"></div></div>
+  <!-- JOURNEY INFO -->
+  <div class="page" id="page-journey"><div id="journeyContent"></div></div>
+  <!-- ORDER -->
+  <div class="page" id="page-order"><div id="orderContent"></div></div>
   <!-- DOWNLOADS -->
   <div class="page" id="page-downloads"><div id="downloadsContent"></div></div>
   <!-- APP STORE -->
@@ -563,6 +579,15 @@ const STRINGS = {
     quick_access:'Quick access',wifi_first:'📶 Connect to the local Wi-Fi first',
     continue_w:'⏱️ Continue Watching',
     nav_services:'SERVICES',nav_system:'SYSTEM',
+    kids_off:'Kids',kids_on:'Kids ✓',
+    journey_nav:'Journey Info',journey_title:'Journey Info',
+    jrn_speed:'Speed',jrn_alt:'Altitude',jrn_eta:'ETA',jrn_dist:'Distance',
+    jrn_next:'Next Stop',jrn_arrive:'Arriving in',jrn_origin:'Origin',jrn_dest:'Destination',
+    jrn_weather:'Weather at Destination',jrn_stops:'All Stops',
+    order_nav:'Order',order_title:'Food & Beverage',
+    ord_cart:'Cart',ord_empty:'Cart is empty',ord_send:'Send Order',ord_sent:'Order Sent!',
+    ord_seat:'Seat / Room',ord_note:'Note for staff',ord_total:'Total',ord_add:'Add',
+    ord_food:'Food',ord_drinks:'Drinks',ord_snacks:'Snacks',ord_desserts:'Desserts',
     map_nav:'Map',map_title:'Offline Map',
     map_offline:'Offline Mode',map_hosted:'Locally hosted',
     map_storage:'Map Storage',map_detail:'Detail Level',
@@ -635,6 +660,15 @@ const STRINGS = {
     quick_access:'دسترسی سریع',wifi_first:'📶 ابتدا به Wi-Fi محلی متصل شوید',
     continue_w:'⏱️ ادامه تماشا',
     nav_services:'سرویس‌ها',nav_system:'سیستم',
+    kids_off:'کودکان',kids_on:'کودکان ✓',
+    journey_nav:'اطلاعات سفر',journey_title:'اطلاعات سفر',
+    jrn_speed:'سرعت',jrn_alt:'ارتفاع',jrn_eta:'زمان رسیدن',jrn_dist:'فاصله',
+    jrn_next:'ایستگاه بعدی',jrn_arrive:'رسیدن در',jrn_origin:'مبدأ',jrn_dest:'مقصد',
+    jrn_weather:'آب‌وهوای مقصد',jrn_stops:'همه ایستگاه‌ها',
+    order_nav:'سفارش',order_title:'غذا و نوشیدنی',
+    ord_cart:'سبد',ord_empty:'سبد خالی است',ord_send:'ارسال سفارش',ord_sent:'سفارش ثبت شد!',
+    ord_seat:'صندلی / اتاق',ord_note:'توضیح برای کارمند',ord_total:'جمع کل',ord_add:'افزودن',
+    ord_food:'غذا',ord_drinks:'نوشیدنی',ord_snacks:'اسنک',ord_desserts:'دسر',
     map_nav:'نقشه',map_title:'نقشه آفلاین',
     map_offline:'حالت آفلاین',map_hosted:'میزبانی محلی',
     map_storage:'فضای نقشه‌ها',map_detail:'سطح جزئیات',
@@ -700,6 +734,15 @@ const STRINGS = {
     quick_access:'وصول سريع',wifi_first:'📶 اتصل بـ Wi-Fi المحلي أولاً',
     continue_w:'⏱️ مواصلة المشاهدة',
     nav_services:'الخدمات',nav_system:'النظام',
+    kids_off:'للأطفال',kids_on:'للأطفال ✓',
+    journey_nav:'معلومات الرحلة',journey_title:'معلومات الرحلة',
+    jrn_speed:'السرعة',jrn_alt:'الارتفاع',jrn_eta:'وقت الوصول',jrn_dist:'المسافة',
+    jrn_next:'المحطة التالية',jrn_arrive:'الوصول خلال',jrn_origin:'نقطة البداية',jrn_dest:'الوجهة',
+    jrn_weather:'طقس الوجهة',jrn_stops:'جميع المحطات',
+    order_nav:'طلب',order_title:'طعام ومشروبات',
+    ord_cart:'السلة',ord_empty:'السلة فارغة',ord_send:'إرسال الطلب',ord_sent:'تم إرسال الطلب!',
+    ord_seat:'المقعد / الغرفة',ord_note:'ملاحظة للموظف',ord_total:'المجموع',ord_add:'إضافة',
+    ord_food:'طعام',ord_drinks:'مشروبات',ord_snacks:'وجبات خفيفة',ord_desserts:'حلويات',
     map_nav:'الخريطة',map_title:'خريطة مضمّنة',
     map_offline:'وضع غير متصل',map_hosted:'مستضاف محليًا',
     map_storage:'مساحة الخرائط',map_detail:'مستوى التفاصيل',
@@ -2099,6 +2142,355 @@ function buildStorage() {
     </div>`;
 }
 
+// ─── KIDS MODE ─────────────────────────────────────────────────────────────
+let kidsMode = false;
+function toggleKids() {
+  kidsMode = !kidsMode;
+  const btn = document.getElementById('kidsBtn');
+  const lbl = document.getElementById('kidsLabel');
+  if (kidsMode) {
+    btn.style.background='rgba(251,191,36,.15)';btn.style.borderColor='rgba(251,191,36,.4)';btn.style.color='#fbbf24';
+    lbl.textContent=t('kids_on');
+    document.body.style.setProperty('--kids-filter','brightness(1.05) saturate(1.2)');
+    toast('👶 '+(currentLang==='fa'?'حالت کودکان فعال شد':currentLang==='ar'?'تم تفعيل وضع الأطفال':'Kids Mode ON — content filtered'));
+  } else {
+    btn.style.background='rgba(255,255,255,.04)';btn.style.borderColor='rgba(255,255,255,.08)';btn.style.color='rgba(255,255,255,.4)';
+    lbl.textContent=t('kids_off');
+    toast('👶 '+(currentLang==='fa'?'حالت کودکان خاموش شد':currentLang==='ar'?'تم إيقاف وضع الأطفال':'Kids Mode OFF'));
+  }
+  // Rebuild home to apply filter
+  delete built['home']; buildHome(); built['home']=true;
+}
+
+// ─── JOURNEY INFO PAGE ──────────────────────────────────────────────────────
+function buildJourney() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const stops = [
+    {name:isFA?'تهران':isAR?'طهران':'Tehran',       dist:0,   done:true,  dep:'08:00'},
+    {name:isFA?'قم':isAR?'قم':'Qom',               dist:142, done:true,  dep:'09:32'},
+    {name:isFA?'اصفهان':isAR?'أصفهان':'Isfahan',    dist:337, done:false, dep:'11:15', next:true},
+    {name:isFA?'شیراز':isAR?'شيراز':'Shiraz',       dist:568, done:false, dep:'14:20'},
+  ];
+  const currentDist = 248; // km from origin
+  const totalDist   = 568;
+  const progressPct = Math.round(currentDist/totalDist*100);
+  const stats = [
+    {icon:'⚡',label:t('jrn_speed'), val:'142',  unit:'km/h', color:'#3b82f6'},
+    {icon:'📐',label:t('jrn_alt'),   val:'1,240', unit:'m',    color:'#8b5cf6'},
+    {icon:'📍',label:t('jrn_dist'),  val:'337',  unit:'km',   color:'#10b981'},
+    {icon:'⏱',label:t('jrn_eta'),   val:'1:43',  unit:isFA?'مانده':isAR?'متبقي':'left', color:'#f59e0b'},
+  ];
+  const weather = {
+    icon:'⛅', temp:'22°C', desc:isFA?'نیمه ابری':isAR?'غائم جزئياً':'Partly cloudy',
+    humidity:'45%', wind:'18 km/h',
+  };
+  document.getElementById('journeyContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">${t('journey_title')}</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.4);margin-top:2px">
+          ${isFA?'تهران → شیراز':isAR?'طهران ← شيراز':'Tehran → Shiraz'} · ${progressPct}% ${isFA?'طی شده':isAR?'مكتمل':'completed'}
+        </p>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px">
+        <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)">
+          <span class="live-dot" style="width:5px;height:5px;border-radius:50%;background:#10b981;display:inline-block"></span>
+          <span style="font-size:11px;font-weight:600;color:#10b981">${isFA?'در حرکت':isAR?'في الحركة':'Moving'}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+      ${stats.map(s=>`
+      <div class="glass" style="border-radius:16px;padding:16px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">${s.icon}</div>
+        <p style="font-size:22px;font-weight:800;color:${s.color}">${s.val}</p>
+        <p style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">${s.label} · ${s.unit}</p>
+      </div>`).join('')}
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:start">
+
+      <!-- Route map -->
+      <div>
+        <div class="glass" style="border-radius:20px;overflow:hidden;padding:0;margin-bottom:14px">
+          <div id="journeyMap" style="width:100%;height:340px;background:#0a0a14"></div>
+        </div>
+
+        <!-- Route progress bar -->
+        <div class="glass" style="border-radius:18px;padding:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <span style="font-size:12px;font-weight:600">${t('jrn_origin')}: <span style="color:#3b82f6">${isFA?'تهران':isAR?'طهران':'Tehran'}</span></span>
+            <span style="font-size:12px;font-weight:600">${t('jrn_dest')}: <span style="color:#10b981">${isFA?'شیراز':isAR?'شيراز':'Shiraz'}</span></span>
+          </div>
+          <!-- Progress track -->
+          <div style="position:relative;height:6px;background:rgba(255,255,255,.07);border-radius:99px;margin-bottom:8px">
+            <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,#3b82f6,#10b981);border-radius:99px"></div>
+            <!-- current position dot -->
+            <div style="position:absolute;top:50%;left:${progressPct}%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #3b82f6;box-shadow:0 0 12px rgba(59,130,246,.6)"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.3)">
+            <span>0 km</span><span style="color:#fff;font-weight:600">${currentDist} km ${isFA?'(شما)':isAR?'(أنت)':'(you)'}</span><span>${totalDist} km</span>
+          </div>
+
+          <!-- Stop dots -->
+          <div style="display:flex;justify-content:space-between;margin-top:14px;position:relative">
+            <div style="position:absolute;top:6px;left:0;right:0;height:1px;background:rgba(255,255,255,.06)"></div>
+            ${stops.map(s=>`
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;z-index:1">
+              <div style="width:13px;height:13px;border-radius:50%;border:2px solid ${s.done?'#10b981':s.next?'#3b82f6':'rgba(255,255,255,.2)'};background:${s.done?'#10b981':s.next?'rgba(59,130,246,.3)':'rgba(255,255,255,.05)'}"></div>
+              <span style="font-size:10px;font-weight:${s.next?'700':'400'};color:${s.done?'#10b981':s.next?'#3b82f6':'rgba(255,255,255,.35)'};white-space:nowrap">${s.name}</span>
+              <span style="font-size:9px;color:rgba(255,255,255,.25)">${s.dep}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Side panel -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- Next stop card -->
+        <div style="border-radius:18px;padding:18px;background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(16,185,129,.1));border:1px solid rgba(59,130,246,.25)">
+          <p style="font-size:10px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">${t('jrn_next')}</p>
+          <p style="font-size:22px;font-weight:800;margin-bottom:4px">${isFA?'اصفهان':isAR?'أصفهان':'Isfahan'}</p>
+          <p style="font-size:13px;color:rgba(255,255,255,.5)">${t('jrn_arrive')}: <span style="color:#fbbf24;font-weight:700">42 ${isFA?'دقیقه':isAR?'دقيقة':'min'}</span></p>
+          <p style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px">89 km ${isFA?'مانده':isAR?'متبقية':'remaining'}</p>
+        </div>
+
+        <!-- All stops -->
+        <div class="glass" style="border-radius:18px;padding:16px">
+          <p style="font-size:12px;font-weight:600;margin-bottom:12px">🚉 ${t('jrn_stops')}</p>
+          ${stops.map(s=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:${s.next?'rgba(59,130,246,.08)':'rgba(255,255,255,.02)'};margin-bottom:5px;border:1px solid ${s.next?'rgba(59,130,246,.2)':'transparent'}">
+            <span style="font-size:16px">${s.done?'✅':s.next?'📍':'🔵'}</span>
+            <div style="flex:1">
+              <p style="font-size:12px;font-weight:${s.next?'700':'400'};color:${s.done?'rgba(255,255,255,.4)':s.next?'#fff':'rgba(255,255,255,.7)'}">${s.name}</p>
+              <p style="font-size:10px;color:rgba(255,255,255,.3)">${s.dep} · ${s.dist} km</p>
+            </div>
+            ${s.next?`<span class="badge badge-blue" style="font-size:9px">${isFA?'بعدی':isAR?'التالية':'Next'}</span>`:''}
+          </div>`).join('')}
+        </div>
+
+        <!-- Weather at destination -->
+        <div class="glass" style="border-radius:18px;padding:16px">
+          <p style="font-size:12px;font-weight:600;margin-bottom:12px">🌤️ ${t('jrn_weather')}</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <span style="font-size:38px">${weather.icon}</span>
+            <div>
+              <p style="font-size:28px;font-weight:800">${weather.temp}</p>
+              <p style="font-size:12px;color:rgba(255,255,255,.45)">${weather.desc}</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px">
+            ${[['💧',isFA?'رطوبت':isAR?'الرطوبة':'Humidity',weather.humidity],['💨',isFA?'باد':isAR?'الرياح':'Wind',weather.wind]].map(([ic,lb,vl])=>`
+            <div style="flex:1;padding:8px;border-radius:10px;background:rgba(255,255,255,.04);text-align:center">
+              <p style="font-size:14px">${ic}</p>
+              <p style="font-size:11px;font-weight:600;margin-top:2px">${vl}</p>
+              <p style="font-size:9px;color:rgba(255,255,255,.35)">${lb}</p>
+            </div>`).join('')}
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+
+  setTimeout(() => {
+    loadLeaflet();
+    setTimeout(() => {
+      const el = document.getElementById('journeyMap');
+      if (!el || !window.L) return;
+      if (window._jmap) { try{window._jmap.remove();}catch(e){} }
+      delete el._leaflet_id; el.innerHTML='';
+      const map = L.map('journeyMap',{zoomControl:true}).setView([31.5,51.5],7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        attribution:'© OpenStreetMap',maxZoom:18,className:'leaflet-tile'
+      }).addTo(map);
+      // Route line
+      const route = [[35.689,51.389],[34.640,50.876],[32.654,51.666],[29.592,52.584]];
+      L.polyline(route,{color:'#3b82f6',weight:4,opacity:.7,dashArray:'8,4'}).addTo(map);
+      // Stop markers
+      const stopData=[{ll:[35.689,51.389],n:isFA?'تهران':'Tehran',done:true},{ll:[34.640,50.876],n:isFA?'قم':'Qom',done:true},{ll:[32.654,51.666],n:isFA?'اصفهان':'Isfahan',next:true},{ll:[29.592,52.584],n:isFA?'شیراز':'Shiraz',done:false}];
+      stopData.forEach(s=>{
+        L.circleMarker(s.ll,{radius:s.next?10:7,fillColor:s.done?'#10b981':s.next?'#3b82f6':'rgba(255,255,255,.3)',color:'#fff',weight:2,fillOpacity:.9}).addTo(map).bindPopup(`<b>${s.n}</b>`);
+      });
+      // Current position
+      L.circleMarker([33.5,51.5],{radius:9,fillColor:'#fff',color:'#3b82f6',weight:3,fillOpacity:1}).addTo(map).bindPopup(`📍 ${isFA?'موقعیت فعلی':isAR?'الموقع الحالي':'Current Position'}`).openPopup();
+      window._jmap = map;
+    },120);
+  },50);
+}
+
+// ─── FOOD & BEVERAGE ORDER PAGE ─────────────────────────────────────────────
+const cart = {};
+function buildOrder() {
+  const isFA=currentLang==='fa', isAR=currentLang==='ar';
+  const currency = isFA?'تومان':isAR?'ر.س':'IRT';
+  const menu = {
+    [t('ord_food')]:[
+      {id:'pizza',name:isFA?'پیتزا مارگاریتا':isAR?'بيتزا مارغريتا':'Margherita Pizza',price:85000,cal:'620 kcal',icon:'🍕',tag:isFA?'پرفروش':isAR?'الأكثر مبيعًا':'Best Seller'},
+      {id:'burger',name:isFA?'برگر کلاسیک':isAR?'برجر كلاسيك':'Classic Burger',price:65000,cal:'540 kcal',icon:'🍔'},
+      {id:'pasta',name:isFA?'پاستا آلفردو':isAR?'باستا ألفريدو':'Pasta Alfredo',price:72000,cal:'480 kcal',icon:'🍝'},
+      {id:'salad',name:isFA?'سالاد سزار':isAR?'سلطة سيزر':'Caesar Salad',price:42000,cal:'280 kcal',icon:'🥗',tag:isFA?'سالم':isAR?'صحي':'Healthy'},
+      {id:'rice',name:isFA?'چلوکباب':isAR?'كباب مع الأرز':'Kebab & Rice',price:95000,cal:'710 kcal',icon:'🍛'},
+      {id:'sandwich',name:isFA?'ساندویچ مرغ':isAR?'ساندويتش دجاج':'Chicken Sandwich',price:48000,cal:'390 kcal',icon:'🥙'},
+    ],
+    [t('ord_drinks')]:[
+      {id:'tea',name:isFA?'چای':isAR?'شاي':'Tea',price:12000,cal:'5 kcal',icon:'☕'},
+      {id:'coffee',name:isFA?'قهوه':isAR?'قهوة':'Coffee',price:22000,cal:'15 kcal',icon:'☕',tag:'Hot'},
+      {id:'juice',name:isFA?'آب‌میوه طبیعی':isAR?'عصير طبيعي':'Fresh Juice',price:28000,cal:'120 kcal',icon:'🥤'},
+      {id:'water',name:isFA?'آب معدنی':isAR?'مياه معدنية':'Mineral Water',price:8000,cal:'0 kcal',icon:'💧'},
+      {id:'soda',name:isFA?'نوشابه':isAR?'مشروب غازي':'Soft Drink',price:15000,cal:'140 kcal',icon:'🥤'},
+      {id:'smoothie',name:isFA?'اسموتی میوه':isAR?'عصير سموثي':'Fruit Smoothie',price:35000,cal:'180 kcal',icon:'🥛'},
+    ],
+    [t('ord_snacks')]:[
+      {id:'chips',name:isFA?'چیپس':isAR?'رقائق البطاطس':'Chips',price:18000,cal:'220 kcal',icon:'🍟'},
+      {id:'nuts',name:isFA?'مغزیجات':isAR?'مكسرات':'Mixed Nuts',price:25000,cal:'320 kcal',icon:'🥜'},
+      {id:'nachos',name:isFA?'ناچوز':isAR?'ناتشوز':'Nachos',price:32000,cal:'380 kcal',icon:'🌮'},
+      {id:'pretzel',name:isFA?'کراکر':isAR?'مقرمشات':'Crackers',price:15000,cal:'180 kcal',icon:'🥨'},
+    ],
+    [t('ord_desserts')]:[
+      {id:'cake',name:isFA?'کیک شکلاتی':isAR?'كيك الشوكولاتة':'Chocolate Cake',price:38000,cal:'420 kcal',icon:'🎂'},
+      {id:'icecream',name:isFA?'بستنی':isAR?'آيس كريم':'Ice Cream',price:28000,cal:'280 kcal',icon:'🍦'},
+      {id:'baklava',name:isFA?'باقلوا':isAR?'بقلاوة':'Baklava',price:22000,cal:'350 kcal',icon:'🍮'},
+    ],
+  };
+  const cats = Object.keys(menu);
+
+  function renderMenu(catKey) {
+    return menu[catKey].map(item=>{
+      const qty = cart[item.id]||0;
+      return `
+      <div class="glass" style="border-radius:16px;padding:14px;position:relative">
+        ${item.tag?`<span style="position:absolute;top:10px;right:10px;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:#fbbf24;font-size:9px;font-weight:700">${item.tag}</span>`:''}
+        <div style="font-size:36px;margin-bottom:8px">${item.icon}</div>
+        <p style="font-size:12px;font-weight:600;margin-bottom:2px;line-height:1.3">${item.name}</p>
+        <p style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:10px">${item.cal}</p>
+        <p style="font-size:15px;font-weight:700;color:#fbbf24;margin-bottom:10px">${(item.price).toLocaleString()} <span style="font-size:10px;color:rgba(255,255,255,.4)">${currency}</span></p>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${qty>0?`
+          <button onclick="updateCart('${item.id}',-1,${item.price})" style="width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font-size:16px;font-weight:700">−</button>
+          <span id="qty_${item.id}" style="font-size:13px;font-weight:700;min-width:20px;text-align:center">${qty}</span>
+          `:''}
+          <button onclick="updateCart('${item.id}',1,${item.price})" style="flex:1;padding:7px;border-radius:9px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:#3b82f6;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(59,130,246,.25)'" onmouseout="this.style.background='rgba(59,130,246,.15)'">
+            ${qty>0?`+ ${t('ord_add')}`:`+ ${t('ord_add')}`}
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('orderContent').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-size:20px;font-weight:700">${t('order_title')}</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.4);margin-top:2px">${isFA?'سفارش دهید و به صندلی/اتاق شما تحویل می‌شود':isAR?'اطلب وسيتم التوصيل إلى مقعدك/غرفتك':'Order from your seat or room — delivered to you'}</p>
+      </div>
+      <button onclick="nav('order')" id="cartSummaryBtn" style="margin-left:auto;display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:#fbbf24;font-size:12px;font-weight:600;cursor:pointer">
+        🛒 <span id="cartCount">${t('ord_cart')}: ${Object.values(cart).reduce((a,b)=>a+b,0)}</span>
+      </button>
+    </div>
+
+    <!-- Category tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px" class="scrollbar-hide" id="ordTabs">
+      ${cats.map((c,i)=>`<button onclick="switchOrderTab(this,'${c}')" style="padding:8px 18px;border-radius:99px;border:1px solid ${i===0?'rgba(251,191,36,.5)':'rgba(255,255,255,.1)'};background:${i===0?'rgba(251,191,36,.12)':'transparent'};color:${i===0?'#fbbf24':'rgba(255,255,255,.5)'};font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s">${c}</button>`).join('')}
+    </div>
+
+    <!-- Seat/room -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">${t('ord_seat')}</label>
+        <input class="input" id="orderSeat" placeholder="${isFA?'مثال: ۱۲A':isAR?'مثال: 12A':'e.g. 12A'}" value="7B"/>
+      </div>
+      <div>
+        <label style="font-size:11px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">${t('ord_note')}</label>
+        <input class="input" id="orderNote" placeholder="${isFA?'بدون پیاز…':isAR?'بدون بصل…':'No onion…'}"/>
+      </div>
+    </div>
+
+    <!-- Menu grid -->
+    <div id="menuGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px">
+      ${renderMenu(cats[0])}
+    </div>
+
+    <!-- Order bar -->
+    <div id="orderBar" style="position:sticky;bottom:80px;padding:16px 20px;border-radius:18px;background:rgba(10,10,15,.95);backdrop-filter:blur(16px);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;gap:16px">
+      <div>
+        <p style="font-size:11px;color:rgba(255,255,255,.4)">${t('ord_total')}</p>
+        <p id="orderTotal" style="font-size:18px;font-weight:800;color:#fbbf24">${Object.entries(cart).reduce((a,[k,v])=>{
+          let price=0;Object.values(menu).flat().forEach(item=>{if(item.id===k)price=item.price});return a+v*price;
+        },0).toLocaleString()} ${currency}</p>
+      </div>
+      <div style="flex:1">
+        <p style="font-size:11px;color:rgba(255,255,255,.4)" id="cartItems">${Object.values(cart).reduce((a,b)=>a+b,0)} ${isFA?'آیتم':isAR?'عنصر':'items'}</p>
+      </div>
+      <button onclick="sendOrder('${currency}')" class="btn-primary" style="padding:12px 24px;font-size:14px;background:linear-gradient(135deg,#f59e0b,#d97706)">
+        🛎️ ${t('ord_send')}
+      </button>
+    </div>`;
+
+  window._orderMenu = menu;
+  window._orderCurrency = currency;
+}
+
+function updateCart(id, delta, price) {
+  cart[id] = Math.max(0,(cart[id]||0)+delta);
+  if (cart[id]===0) delete cart[id];
+  // Update badge
+  const total = Object.values(cart).reduce((a,b)=>a+b,0);
+  const badge = document.getElementById('cartBadge');
+  if(badge){badge.textContent=total;badge.style.display=total>0?'':'none';}
+  // Update total bar
+  const currency=window._orderCurrency||'';
+  const menu=window._orderMenu||{};
+  const totalPrice=Object.entries(cart).reduce((a,[k,v])=>{let p=0;Object.values(menu).flat().forEach(i=>{if(i.id===k)p=i.price});return a+v*p;},0);
+  const el=document.getElementById('orderTotal');if(el)el.textContent=totalPrice.toLocaleString()+' '+currency;
+  const ci=document.getElementById('cartItems');if(ci)ci.textContent=total+' '+(currentLang==='fa'?'آیتم':currentLang==='ar'?'عنصر':'items');
+  const cc=document.getElementById('cartCount');if(cc)cc.textContent=(currentLang==='fa'?'سبد':currentLang==='ar'?'السلة':'Cart')+': '+total;
+  // Rebuild menu to show qty
+  const activeTab=document.querySelector('#ordTabs button[data-active]');
+  if(activeTab)switchOrderTab(activeTab,activeTab.textContent.trim(),true);
+}
+
+function switchOrderTab(btn, cat, silent) {
+  document.querySelectorAll('#ordTabs button').forEach(b=>{
+    b.style.background='transparent';b.style.color='rgba(255,255,255,.5)';b.style.borderColor='rgba(255,255,255,.1)';
+    delete b.dataset.active;
+  });
+  btn.style.background='rgba(251,191,36,.12)';btn.style.color='#fbbf24';btn.style.borderColor='rgba(251,191,36,.5)';
+  btn.dataset.active='1';
+  const menu=window._orderMenu||{};
+  const currency=window._orderCurrency||'';
+  const isFA=currentLang==='fa',isAR=currentLang==='ar';
+  const items=(menu[cat]||[]).map(item=>{
+    const qty=cart[item.id]||0;
+    return `<div class="glass" style="border-radius:16px;padding:14px;position:relative">
+      ${item.tag?`<span style="position:absolute;top:10px;right:10px;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:#fbbf24;font-size:9px;font-weight:700">${item.tag}</span>`:''}
+      <div style="font-size:36px;margin-bottom:8px">${item.icon}</div>
+      <p style="font-size:12px;font-weight:600;margin-bottom:2px;line-height:1.3">${item.name}</p>
+      <p style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:10px">${item.cal}</p>
+      <p style="font-size:15px;font-weight:700;color:#fbbf24;margin-bottom:10px">${item.price.toLocaleString()} <span style="font-size:10px;color:rgba(255,255,255,.4)">${currency}</span></p>
+      <div style="display:flex;align-items:center;gap:6px">
+        ${qty>0?`<button onclick="updateCart('${item.id}',-1,${item.price})" style="width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font-size:16px">−</button><span style="font-size:13px;font-weight:700;min-width:20px;text-align:center">${qty}</span>`:''}
+        <button onclick="updateCart('${item.id}',1,${item.price})" style="flex:1;padding:7px;border-radius:9px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);color:#fbbf24;font-size:12px;font-weight:600;cursor:pointer">+ ${t('ord_add')}</button>
+      </div>
+    </div>`;
+  }).join('');
+  const grid=document.getElementById('menuGrid');
+  if(grid)grid.innerHTML=items||`<p style="color:rgba(255,255,255,.3);grid-column:1/-1;text-align:center;padding:40px">${t('ord_empty')}</p>`;
+}
+
+function sendOrder(currency) {
+  const isFA=currentLang==='fa',isAR=currentLang==='ar';
+  const total=Object.values(cart).reduce((a,b)=>a+b,0);
+  if(total===0){toast('🛒 '+(isFA?'سبد خالی است':isAR?'السلة فارغة':'Cart is empty'));return;}
+  const seat=document.getElementById('orderSeat')?.value||'–';
+  toast(`🛎️ ${t('ord_sent')} — ${isFA?'صندلی':isAR?'المقعد':'Seat'} ${seat} · ${total} ${isFA?'آیتم':isAR?'عنصر':'items'}`);
+  Object.keys(cart).forEach(k=>delete cart[k]);
+  const badge=document.getElementById('cartBadge');if(badge){badge.textContent='0';badge.style.display='none';}
+  setTimeout(()=>{ delete built['order']; buildOrder(); built['order']=true; },500);
+}
+
 // ─── MAP PAGE ──────────────────────────────────────────────────────────────
 function buildMap() {
   const isFA=currentLang==='fa', isAR=currentLang==='ar';
@@ -2298,9 +2690,9 @@ function selectZoom(el) {
 }
 
 // ─── NAVIGATION ────────────────────────────────────────────────────────────
-const TITLE_KEYS = {home:'home',live:'live_tv',movies:'library',series:'series',music:'music',games:'games_title',party:'watch_party',network:'net_status',admin:'admin_title',settings:'settings_title',profile:'profile',setup:'setup_guide',login:'',downloads:'downloads',appstore:'appstore',ai:'ai_assistant',broadcast:'broadcast',storage:'storage_nav',map:'map_title'};
-const TITLES = {};  // dynamically resolved via t() in nav()
-const builders = {home:buildHome,live:buildLive,movies:buildMovies,series:buildSeries,music:buildMusic,games:buildGames,party:buildParty,network:buildNetwork,admin:buildAdmin,settings:buildSettings,profile:buildProfile,setup:buildSetup,downloads:buildDownloads,appstore:buildAppStore,ai:buildAI,broadcast:buildBroadcast,storage:buildStorage,map:buildMap};
+const TITLE_KEYS = {home:'home',live:'live_tv',movies:'library',series:'series',music:'music',games:'games_title',party:'watch_party',network:'net_status',admin:'admin_title',settings:'settings_title',profile:'profile',setup:'setup_guide',login:'',downloads:'downloads',appstore:'appstore',ai:'ai_assistant',broadcast:'broadcast',storage:'storage_nav',map:'map_title',journey:'journey_title',order:'order_title'};
+const TITLES = {};
+const builders = {home:buildHome,live:buildLive,movies:buildMovies,series:buildSeries,music:buildMusic,games:buildGames,party:buildParty,network:buildNetwork,admin:buildAdmin,settings:buildSettings,profile:buildProfile,setup:buildSetup,downloads:buildDownloads,appstore:buildAppStore,ai:buildAI,broadcast:buildBroadcast,storage:buildStorage,map:buildMap,journey:buildJourney,order:buildOrder};
 const built = {};
 
 function nav(id) {
