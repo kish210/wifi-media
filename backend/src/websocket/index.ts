@@ -5,6 +5,8 @@ import { config } from "../config";
 import { getDb } from "../db/schema";
 import { v4 as uuidv4 } from "uuid";
 
+export let io: SocketServer;
+
 interface AuthPayload {
   userId: string;
   username: string;
@@ -21,7 +23,7 @@ interface ClientMeta {
 const clients = new Map<string, ClientMeta>();
 
 export function setupWebSocket(httpServer: Server) {
-  const io = new SocketServer(httpServer, {
+  io = new SocketServer(httpServer, {
     cors: { origin: "*", methods: ["GET", "POST"] },
     transports: ["websocket", "polling"],
   });

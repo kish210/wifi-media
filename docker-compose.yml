@@ -19,6 +19,9 @@ services:
       - TVHEADEND_PASS=${TVHEADEND_PASS:-admin}
       - DB_PATH=/data/wifi-media.db
       - MEDIA_PATH=/media
+      - OLLAMA_URL=http://ollama:11434
+      - KISHWIFI_CDN=${KISHWIFI_CDN:-https://kishwifi.com}
+      - TZ=${TZ:-Asia/Tehran}
     volumes:
       - ./data:/data
       - ${MEDIA_PATH:-./media}:/media
@@ -26,6 +29,7 @@ services:
       - wifi-media-net
     depends_on:
       - tvheadend
+      - redis
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:4000/api/health"]
       interval: 30s
@@ -61,13 +65,34 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-Asia/Tehran}
     volumes:
       - ./tvheadend/config:/config
       - ./tvheadend/recordings:/recordings
       - ${MEDIA_PATH:-./media}:/media
     networks:
       - wifi-media-net
+
+  # ─── Ollama (Offline AI) ──────────────────────────────────────────────────
+  # Pull a model after first start: docker exec wifi-media-ollama ollama pull llama3.2:3b
+  ollama:
+    image: ollama/ollama:latest
+    container_name: wifi-media-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - wifi-media-net
+    # GPU support — uncomment if you have NVIDIA GPU:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
 
   # ─── Preview (interactive UI demo — no build needed) ─────────────────────
   preview:
@@ -86,13 +111,18 @@ services:
     image: redis:7-alpine
     container_name: wifi-media-redis
     restart: unless-stopped
-    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --save 60 1
     ports:
       - "6379:6379"
     volumes:
       - redis-data:/data
     networks:
       - wifi-media-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
   wifi-media-net:
@@ -103,3 +133,4 @@ networks:
 
 volumes:
   redis-data:
+  ollama-data:

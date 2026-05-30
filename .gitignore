@@ -63,3 +63,6 @@ logs/
 
 # ── TypeScript ────────────────────────────────────────────────────────────
 *.tsbuildinfo
+
+# ── Local scripts (contain tokens) ────────────────────────────────────────
+push-to-github.ps1
